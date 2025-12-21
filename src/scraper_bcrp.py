@@ -47,8 +47,8 @@ def construir_url(fecha_inicio: str, fecha_fin: str) -> str:
         str: URL completa para la consulta
     
     Ejemplo:
-        >>> construir_url("2024-12-01", "2024-12-13")
-        'https://estadisticas.bcrp.gob.pe/estadisticas/series/api/PD04638PD-PD04639PD/json/2024-12-01/2024-12-13'
+        >>> construir_url("2025-12-01", "2025-12-13")
+        'https://estadisticas.bcrp.gob.pe/estadisticas/series/api/PD04638PD-PD04639PD/json/2025-12-01/2025-12-13'
     """
     series = f"{SERIES_COMPRA}-{SERIES_VENTA}"
     url = f"{BASE_URL}/{series}/{FORMATO}/{fecha_inicio}/{fecha_fin}"

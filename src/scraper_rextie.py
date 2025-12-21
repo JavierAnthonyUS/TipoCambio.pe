@@ -7,7 +7,7 @@ mediante web scraping.
 URL: https://rextie.com
 
 Autor: Sebastián Fernández (@TucoSquare)
-Fecha: Diciembre 2024
+Fecha: Diciembre 2025
 """
 
 import requests

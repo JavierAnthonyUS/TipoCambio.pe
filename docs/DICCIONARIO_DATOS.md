@@ -14,7 +14,7 @@ Este archivo contiene el registro histórico consolidado de todos los tipos de c
 
 | # | Variable | Tipo | Descripción | Ejemplo | Fuente |
 |---|----------|------|-------------|---------|--------|
-| 1 | `timestamp` | datetime | Fecha y hora exacta de la extracción | `2024-12-13 10:00:00` | Sistema |
+| 1 | `timestamp` | datetime | Fecha y hora exacta de la extracción | `2025-12-13 10:00:00` | Sistema |
 | 2 | `tc_bcrp_compra` | float | Tipo de cambio oficial de COMPRA del BCRP | `3.720` | API BCRP |
 | 3 | `tc_bcrp_venta` | float | Tipo de cambio oficial de VENTA del BCRP | `3.760` | API BCRP |
 | 4 | `tc_kambista_compra` | float | Tasa de COMPRA de Kambista | `3.735` | Web Scraping |
@@ -143,12 +143,12 @@ Spread = Tasa Venta - Tasa Compra
 
 ```csv
 timestamp,tc_bcrp_compra,tc_bcrp_venta,tc_kambista_compra,tc_kambista_venta,tc_rextie_compra,tc_rextie_venta,spread_bcrp,spread_kambista,spread_rextie,mejor_compra,mejor_venta,cambio_detectado
-2024-12-13 10:00:00,3.7200,3.7600,3.7350,3.7550,3.7300,3.7500,0.0400,0.0200,0.0200,Rextie,Kambista,True
-2024-12-13 11:00:00,3.7200,3.7600,3.7360,3.7560,3.7300,3.7500,0.0400,0.0200,0.0200,Rextie,Kambista,True
-2024-12-13 12:00:00,3.7200,3.7600,3.7360,3.7560,3.7300,3.7500,0.0400,0.0200,0.0200,Rextie,Kambista,False
+2025-12-13 10:00:00,3.7200,3.7600,3.7350,3.7550,3.7300,3.7500,0.0400,0.0200,0.0200,Rextie,Kambista,True
+2025-12-13 11:00:00,3.7200,3.7600,3.7360,3.7560,3.7300,3.7500,0.0400,0.0200,0.0200,Rextie,Kambista,True
+2025-12-13 12:00:00,3.7200,3.7600,3.7360,3.7560,3.7300,3.7500,0.0400,0.0200,0.0200,Rextie,Kambista,False
 ```
 
 ---
 
-*Documento creado: 13/12/2024*
-*Última actualización: 13/12/2024*
+*Documento creado: 13/12/2025*
+*Última actualización: 13/12/2025*

@@ -2,7 +2,7 @@
 
 ## TipoCambio.pe - Fuentes de Información
 
-**Última actualización:** Diciembre 2024
+**Última actualización:** Diciembre 2025
 **Investigación realizada por:** Javier Uraco (@JavierAnthonyUS)
 
 ---
@@ -77,7 +77,7 @@ Respuesta:
 | **URL** | https://kambista.com |
 | **Estado** | ⚠️ **REQUIERE SELENIUM** |
 
-### Análisis Técnico (20 Dic 2024)
+### Análisis Técnico (20 Dic 2025)
 
 **Resultado de prueba con requests + BeautifulSoup:**
 ```
@@ -134,7 +134,7 @@ driver.quit()
 | **URL** | https://rextie.com |
 | **Estado** | ⚠️ **REQUIERE SELENIUM** |
 
-### Análisis Técnico (20 Dic 2024)
+### Análisis Técnico (20 Dic 2025)
 
 **Resultado de prueba con requests + BeautifulSoup:**
 ```
@@ -254,5 +254,5 @@ También se necesita Chrome o Firefox instalado.
 
 ---
 
-*Documento actualizado: 20/12/2024*
+*Documento actualizado: 20/12/2025*
 *Investigación técnica: Javier Uraco (@JavierAnthonyUS)*

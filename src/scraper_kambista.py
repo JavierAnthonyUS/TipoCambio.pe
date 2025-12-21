@@ -7,7 +7,7 @@ mediante web scraping.
 URL: https://kambista.com
 
 Autor: Fiorella Fuentes (@fiorellafuentesb20-cell)
-Fecha: Diciembre 2024
+Fecha: Diciembre 2025
 """
 
 import requests

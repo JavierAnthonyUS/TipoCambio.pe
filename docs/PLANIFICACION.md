@@ -22,16 +22,16 @@ Desarrollar un sistema automatizado de extracción y comparación de tipos de ca
 
 | Fase | Tarea | Responsable | Fecha | Estado |
 |------|-------|-------------|-------|--------|
-| 1 | Crear repositorio GitHub | Javier | 13/12/2024 | ✅ |
-| 1 | Definir estructura del proyecto | Equipo | 13/12/2024 | ✅ |
-| 2 | Desarrollar scraper BCRP | Javier | 14/12/2024 | ⏳ |
-| 2 | Desarrollar scraper Kambista | Fiorella | 14/12/2024 | ⏳ |
-| 2 | Desarrollar scraper Rextie | Sebastián | 14/12/2024 | ⏳ |
-| 3 | Integrar fuentes | Javier | 15/12/2024 | ⏳ |
-| 3 | Testing y correcciones | Equipo | 15/12/2024 | ⏳ |
-| 4 | Documentación final | Fiorella | 15/12/2024 | ⏳ |
-| 4 | Preparar presentación | Equipo | 16/12/2024 | ⏳ |
-| 5 | **Exposición final** | Equipo | 16/12/2024 | ⏳ |
+| 1 | Crear repositorio GitHub | Javier | 13/12/2025 | ✅ |
+| 1 | Definir estructura del proyecto | Equipo | 13/12/2025 | ✅ |
+| 2 | Desarrollar scraper BCRP | Javier | 14/12/2025 | ⏳ |
+| 2 | Desarrollar scraper Kambista | Fiorella | 14/12/2025 | ⏳ |
+| 2 | Desarrollar scraper Rextie | Sebastián | 14/12/2025 | ⏳ |
+| 3 | Integrar fuentes | Javier | 15/12/2025 | ⏳ |
+| 3 | Testing y correcciones | Equipo | 15/12/2025 | ⏳ |
+| 4 | Documentación final | Fiorella | 15/12/2025 | ⏳ |
+| 4 | Preparar presentación | Equipo | 16/12/2025 | ⏳ |
+| 5 | **Exposición final** | Equipo | 16/12/2025 | ⏳ |
 
 ---
 
@@ -167,7 +167,7 @@ mejor_venta = max([
 
 ```csv
 timestamp,tc_bcrp_compra,tc_bcrp_venta,tc_kambista_compra,tc_kambista_venta,tc_rextie_compra,tc_rextie_venta,spread_bcrp,spread_kambista,spread_rextie,mejor_compra,mejor_venta
-2024-12-13 10:00:00,3.720,3.760,3.735,3.755,3.730,3.750,0.040,0.020,0.020,Rextie,Kambista
+2025-12-13 10:00:00,3.720,3.760,3.735,3.755,3.730,3.750,0.040,0.020,0.020,Rextie,Kambista
 ```
 
 ---
@@ -237,5 +237,5 @@ while True:
 
 ---
 
-*Documento creado: 13/12/2024*
-*Última actualización: 13/12/2024*
+*Documento creado: 13/12/2025*
+*Última actualización: 13/12/2025*

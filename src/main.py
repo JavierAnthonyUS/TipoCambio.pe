@@ -10,7 +10,7 @@ Uso:
 Para detener: Ctrl+C
 
 Autor: Equipo TipoCambio.pe
-Fecha: Diciembre 2024
+Fecha: Diciembre 2025
 """
 
 import schedule

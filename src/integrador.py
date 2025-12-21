@@ -5,7 +5,7 @@ Este módulo combina los datos de todas las fuentes (BCRP, Kambista, Rextie)
 en un registro único y lo guarda en el archivo CSV histórico.
 
 Autor: Javier Uraco (@JavierAnthonyUS)
-Fecha: Diciembre 2024
+Fecha: Diciembre 2025
 """
 
 import os
