@@ -9,9 +9,13 @@ Fecha: Diciembre 2025
 """
 
 import os
+import sys
 import logging
 from datetime import datetime
 from typing import Dict, Optional
+
+# Agregar el directorio actual al path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Importar scrapers
 from scraper_bcrp import obtener_tipo_cambio_bcrp
@@ -34,7 +38,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Rutas de archivos
-RUTA_CSV_HISTORICO = "../data/processed/tipo_cambio_historico.csv"
+RUTA_CSV_HISTORICO = os.path.join(os.path.dirname(__file__), "..", "data", "processed", "tipo_cambio_historico.csv")
 
 
 def extraer_todas_las_fuentes() -> Dict:
@@ -44,11 +48,18 @@ def extraer_todas_las_fuentes() -> Dict:
     Returns:
         Dict con los datos combinados de todas las fuentes
     """
+    logger.info("=" * 50)
     logger.info("Iniciando extracción de todas las fuentes...")
+    logger.info("=" * 50)
     
     # Obtener datos de cada fuente
+    print("\n📊 Extrayendo datos de BCRP (API)...")
     datos_bcrp = obtener_tipo_cambio_bcrp()
+    
+    print("\n📊 Extrayendo datos de Kambista (Selenium)...")
     datos_kambista = obtener_tipo_cambio_kambista()
+    
+    print("\n📊 Extrayendo datos de Rextie (Selenium)...")
     datos_rextie = obtener_tipo_cambio_rextie()
     
     # Combinar en un solo diccionario
@@ -147,9 +158,10 @@ def ejecutar_extraccion(forzar_guardado: bool = False) -> Dict:
     Returns:
         Dict con los datos extraídos y el estado de la operación
     """
-    logger.info("=" * 50)
-    logger.info("INICIANDO EXTRACCIÓN DE TIPO DE CAMBIO")
-    logger.info("=" * 50)
+    print("\n" + "=" * 60)
+    print("   💱 SISTEMA DE EXTRACCIÓN DE TIPO DE CAMBIO")
+    print("   📅 " + datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+    print("=" * 60)
     
     # 1. Extraer datos de todas las fuentes
     datos = extraer_todas_las_fuentes()
@@ -168,23 +180,34 @@ def ejecutar_extraccion(forzar_guardado: bool = False) -> Dict:
         exito = guardar_csv(registro, RUTA_CSV_HISTORICO)
         
         if exito:
-            logger.info("✅ Datos guardados exitosamente")
+            print("\n💾 Datos guardados exitosamente en CSV")
         else:
-            logger.error("❌ Error al guardar datos")
+            print("\n❌ Error al guardar datos")
     else:
-        logger.info("ℹ️ Sin cambios detectados, no se guardó nuevo registro")
+        print("\nℹ️ Sin cambios detectados, no se guardó nuevo registro")
     
-    # 5. Resumen
-    logger.info("-" * 50)
-    logger.info("RESUMEN DE EXTRACCIÓN:")
-    logger.info(f"  Timestamp: {datos['timestamp']}")
-    logger.info(f"  BCRP: Compra={datos['tc_bcrp_compra']}, Venta={datos['tc_bcrp_venta']}")
-    logger.info(f"  Kambista: Compra={datos['tc_kambista_compra']}, Venta={datos['tc_kambista_venta']}")
-    logger.info(f"  Rextie: Compra={datos['tc_rextie_compra']}, Venta={datos['tc_rextie_venta']}")
-    logger.info(f"  Mejor para comprar USD: {datos['mejor_compra']}")
-    logger.info(f"  Mejor para vender USD: {datos['mejor_venta']}")
-    logger.info(f"  Cambio detectado: {datos['cambio_detectado']}")
-    logger.info("=" * 50)
+    # 5. Mostrar resumen
+    print("\n" + "=" * 60)
+    print("   📊 RESUMEN DE EXTRACCIÓN")
+    print("=" * 60)
+    
+    print(f"\n   🕐 Timestamp: {datos['timestamp']}")
+    
+    print("\n   📈 TIPOS DE CAMBIO:")
+    print(f"   ┌{'─'*56}┐")
+    print(f"   │ {'Fuente':<12} │ {'Compra':>10} │ {'Venta':>10} │ {'Spread':>10} │")
+    print(f"   ├{'─'*56}┤")
+    print(f"   │ {'BCRP':<12} │ {str(datos['tc_bcrp_compra']):>10} │ {str(datos['tc_bcrp_venta']):>10} │ {str(datos['spread_bcrp']):>10} │")
+    print(f"   │ {'Kambista':<12} │ {str(datos['tc_kambista_compra']):>10} │ {str(datos['tc_kambista_venta']):>10} │ {str(datos['spread_kambista']):>10} │")
+    print(f"   │ {'Rextie':<12} │ {str(datos['tc_rextie_compra']):>10} │ {str(datos['tc_rextie_venta']):>10} │ {str(datos['spread_rextie']):>10} │")
+    print(f"   └{'─'*56}┘")
+    
+    print(f"\n   🏆 MEJOR OPCIÓN:")
+    print(f"      • Para COMPRAR dólares: {datos['mejor_compra']}")
+    print(f"      • Para VENDER dólares:  {datos['mejor_venta']}")
+    
+    print(f"\n   ✓ Cambio detectado: {datos['cambio_detectado']}")
+    print("=" * 60 + "\n")
     
     return datos
 
@@ -192,10 +215,3 @@ def ejecutar_extraccion(forzar_guardado: bool = False) -> Dict:
 if __name__ == "__main__":
     # Ejecutar extracción
     resultado = ejecutar_extraccion(forzar_guardado=True)
-    
-    print("\n" + "=" * 50)
-    print("DATOS EXTRAÍDOS:")
-    print("=" * 50)
-    for key, value in resultado.items():
-        if not key.endswith('_exito'):
-            print(f"  {key}: {value}")
