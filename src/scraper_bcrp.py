@@ -11,7 +11,8 @@ Series utilizadas:
     - PD04639PD: Tipo de cambio venta
 
 Autor: Javier Uraco (@JavierAnthonyUS)
-Fecha: Diciembre 2024
+Fecha: Diciembre 2025
+Última modificación: Diciembre 2025 - Testeado y optimizado
 """
 
 import requests
@@ -24,10 +25,12 @@ from typing import Dict, Optional
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Configuración de la API
+# ============================================================
+# CONFIGURACIÓN DE LA API DEL BCRP
+# ============================================================
 BASE_URL = "https://estadisticas.bcrp.gob.pe/estadisticas/series/api"
-SERIES_COMPRA = "PD04638PD"
-SERIES_VENTA = "PD04639PD"
+SERIES_COMPRA = "PD04638PD"  # Serie oficial de tipo de cambio compra
+SERIES_VENTA = "PD04639PD"   # Serie oficial de tipo de cambio venta
 FORMATO = "json"
 TIMEOUT = 30  # segundos
 
@@ -52,6 +55,21 @@ def construir_url(fecha_inicio: str, fecha_fin: str) -> str:
     return url
 
 
+def formatear_tipo_cambio(valor: float) -> float:
+    """
+    Formatea el tipo de cambio a 4 decimales.
+    
+    Args:
+        valor: Valor del tipo de cambio
+    
+    Returns:
+        float: Valor redondeado a 4 decimales
+    """
+    if valor is None:
+        return None
+    return round(float(valor), 4)
+
+
 def obtener_tipo_cambio_bcrp() -> Dict[str, Optional[float]]:
     """
     Obtiene el tipo de cambio actual del BCRP.
@@ -71,12 +89,17 @@ def obtener_tipo_cambio_bcrp() -> Dict[str, Optional[float]]:
         >>> datos = obtener_tipo_cambio_bcrp()
         >>> print(datos)
         {
-            'tc_bcrp_compra': 3.72,
-            'tc_bcrp_venta': 3.76,
-            'fecha_bcrp': '2024-12-13',
+            'tc_bcrp_compra': 3.3666,
+            'tc_bcrp_venta': 3.3630,
+            'fecha_bcrp': '18.Dic.25',
             'exito': True,
             'error': None
         }
+    
+    Notas:
+        - La API del BCRP es gratuita y no requiere autenticación
+        - Los datos se actualizan diariamente
+        - Fuente oficial del gobierno peruano
     """
     resultado = {
         'tc_bcrp_compra': None,
@@ -117,12 +140,12 @@ def obtener_tipo_cambio_bcrp() -> Dict[str, Optional[float]]:
                 tc_compra = valores[0]
                 tc_venta = valores[1]
                 
-                # Convertir a float (pueden venir como string)
+                # Convertir y formatear a 4 decimales
                 if tc_compra and tc_compra != 'n.d.':
-                    resultado['tc_bcrp_compra'] = float(tc_compra)
+                    resultado['tc_bcrp_compra'] = formatear_tipo_cambio(tc_compra)
                 
                 if tc_venta and tc_venta != 'n.d.':
-                    resultado['tc_bcrp_venta'] = float(tc_venta)
+                    resultado['tc_bcrp_venta'] = formatear_tipo_cambio(tc_venta)
                 
                 # Obtener fecha del periodo
                 resultado['fecha_bcrp'] = ultimo_periodo.get('name', '')
@@ -164,29 +187,44 @@ def obtener_series_disponibles() -> None:
     Función auxiliar para explorar las series disponibles en el BCRP.
     Útil para debugging y exploración de la API.
     """
-    print("Series de Tipo de Cambio del BCRP:")
-    print(f"  - {SERIES_COMPRA}: Tipo de cambio compra")
-    print(f"  - {SERIES_VENTA}: Tipo de cambio venta")
-    print(f"\nURL base: {BASE_URL}")
-    print(f"Formato: {FORMATO}")
-
-
-if __name__ == "__main__":
-    # Test del módulo
     print("=" * 50)
-    print("TEST: Scraper BCRP")
+    print("SERIES DE TIPO DE CAMBIO - BCRP")
+    print("=" * 50)
+    print(f"  Serie Compra: {SERIES_COMPRA}")
+    print(f"  Serie Venta:  {SERIES_VENTA}")
+    print(f"  URL base:     {BASE_URL}")
+    print(f"  Formato:      {FORMATO}")
+    print("=" * 50)
+
+
+# ============================================================
+# EJECUCIÓN PRINCIPAL (para testing)
+# ============================================================
+if __name__ == "__main__":
+    print("\n" + "=" * 50)
+    print("   TEST: Scraper BCRP - API Oficial Perú")
     print("=" * 50)
     
     obtener_series_disponibles()
     
-    print("\nObteniendo tipo de cambio actual...")
+    print("\n🔄 Obteniendo tipo de cambio actual...")
     datos = obtener_tipo_cambio_bcrp()
     
-    print("\nResultados:")
-    for key, value in datos.items():
-        print(f"  {key}: {value}")
+    print("\n📊 RESULTADOS:")
+    print("-" * 50)
+    print(f"  💵 Tipo Cambio Compra: S/ {datos['tc_bcrp_compra']}")
+    print(f"  💵 Tipo Cambio Venta:  S/ {datos['tc_bcrp_venta']}")
+    print(f"  📅 Fecha:              {datos['fecha_bcrp']}")
+    print(f"  ✓  Éxito:              {datos['exito']}")
+    
+    if datos['error']:
+        print(f"  ❌ Error:              {datos['error']}")
+    
+    print("-" * 50)
     
     if datos['exito']:
-        print("\n✅ Extracción exitosa!")
+        print("\n✅ SCRAPER BCRP FUNCIONANDO CORRECTAMENTE")
     else:
-        print(f"\n❌ Error: {datos['error']}")
+        print(f"\n❌ ERROR: {datos['error']}")
+    
+    print("=" * 50 + "\n")
