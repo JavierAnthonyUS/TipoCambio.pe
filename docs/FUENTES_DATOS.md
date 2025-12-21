@@ -2,6 +2,19 @@
 
 ## TipoCambio.pe - Fuentes de Información
 
+**Última actualización:** Diciembre 2024
+**Investigación realizada por:** Javier Uraco (@JavierAnthonyUS)
+
+---
+
+## Resumen Ejecutivo
+
+| Fuente | Tipo | Estado | Método Requerido |
+|--------|------|--------|------------------|
+| **BCRP** | API REST | ✅ Funcionando | requests + JSON |
+| **Kambista** | Página Dinámica | ⚠️ Requiere Selenium | Selenium WebDriver |
+| **Rextie** | Página Dinámica | ⚠️ Requiere Selenium | Selenium WebDriver |
+
 ---
 
 ## 1. API del Banco Central de Reserva del Perú (BCRP)
@@ -14,10 +27,10 @@
 | **Tipo** | API REST pública |
 | **Formato** | JSON / XML |
 | **Autenticación** | No requerida |
+| **Estado** | ✅ **FUNCIONANDO** |
 | **Documentación** | https://estadisticas.bcrp.gob.pe/estadisticas/series/ayuda/api |
 
 ### Endpoint Base
-
 ```
 https://estadisticas.bcrp.gob.pe/estadisticas/series/api/
 ```
@@ -26,45 +39,30 @@ https://estadisticas.bcrp.gob.pe/estadisticas/series/api/
 
 | Código Serie | Descripción | Unidad |
 |--------------|-------------|--------|
-| `PD04638PD` | Tipo de cambio - Loss – promedio del periodo (S/ por US$) - Compra | Soles por dólar |
-| `PD04639PD` | Tipo de cambio - Loss – promedio del periodo (S/ por US$) - Venta | Soles por dólar |
+| `PD04638PD` | Tipo de cambio - Compra | Soles por dólar |
+| `PD04639PD` | Tipo de cambio - Venta | Soles por dólar |
 
 ### Formato de Consulta
-
 ```
 https://estadisticas.bcrp.gob.pe/estadisticas/series/api/{series}/{formato}/{fecha_inicio}/{fecha_fin}
 ```
 
-**Ejemplo:**
+### Ejemplo de Consulta Exitosa
 ```
-https://estadisticas.bcrp.gob.pe/estadisticas/series/api/PD04638PD-PD04639PD/json/2024-12-01/2024-12-13
-```
+URL: https://estadisticas.bcrp.gob.pe/estadisticas/series/api/PD04638PD-PD04639PD/json/2025-12-13/2025-12-20
 
-### Estructura de Respuesta JSON
-
-```json
-{
-  "periods": [
-    {
-      "name": "Dic.2024",
-      "values": ["3.72", "3.76"]
-    }
-  ],
-  "config": {
-    "series": [
-      {"name": "Tipo de cambio - Compra"},
-      {"name": "Tipo de cambio - Venta"}
-    ]
-  }
-}
+Respuesta:
+- tc_bcrp_compra: 3.3666
+- tc_bcrp_venta: 3.3630
+- fecha: 18.Dic.25
 ```
 
 ### Consideraciones
 
-- ✅ **Ventaja:** Fuente oficial, datos confiables
+- ✅ **Ventaja:** Fuente oficial del gobierno peruano
 - ✅ **Ventaja:** API pública sin autenticación
+- ✅ **Ventaja:** Datos confiables y estables
 - ⚠️ **Limitación:** Actualización diaria (no intradía)
-- ⚠️ **Limitación:** Puede tener delay de 1 día
 
 ---
 
@@ -77,50 +75,51 @@ https://estadisticas.bcrp.gob.pe/estadisticas/series/api/PD04638PD-PD04639PD/jso
 | **Nombre** | Kambista |
 | **Tipo** | Casa de cambio digital |
 | **URL** | https://kambista.com |
-| **Método de extracción** | Web Scraping |
-| **robots.txt** | Verificar antes de scraping |
+| **Estado** | ⚠️ **REQUIERE SELENIUM** |
 
-### Datos a Extraer
+### Análisis Técnico (20 Dic 2024)
 
-| Dato | Descripción | Ubicación en HTML |
-|------|-------------|-------------------|
-| Tasa de compra | Precio al que Kambista COMPRA dólares | Por inspeccionar |
-| Tasa de venta | Precio al que Kambista VENDE dólares | Por inspeccionar |
-
-### Proceso de Inspección
-
-1. Abrir https://kambista.com en navegador
-2. Click derecho → "Inspeccionar elemento"
-3. Localizar los elementos que muestran las tasas
-4. Identificar selectores CSS o XPath
-5. Verificar si los datos se cargan estáticamente o con JavaScript
-
-### Verificación Estático vs Dinámico
-
-```python
-import requests
-response = requests.get("https://kambista.com")
-print(response.text)
-# Si las tasas aparecen → Estático (usar requests + BeautifulSoup)
-# Si NO aparecen → Dinámico (usar Selenium)
+**Resultado de prueba con requests + BeautifulSoup:**
+```
+❌ No se encontraron las tasas
+Diagnóstico: Página dinámica (contenido cargado con JavaScript)
 ```
 
-### Headers Recomendados
-
-```python
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-    "Accept-Language": "es-PE,es;q=0.9,en;q=0.8"
-}
+**robots.txt:**
+```
+User-agent: *
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
 ```
 
-### Consideraciones Éticas
+### Hallazgos
 
-- ✅ Frecuencia baja: máximo 1 petición por hora
-- ✅ Respetar robots.txt
-- ✅ No sobrecargar el servidor
-- ✅ User-agent transparente (o realista)
+1. La página utiliza **JavaScript/Angular** para cargar el contenido
+2. Las tasas de cambio NO están en el HTML inicial
+3. Se cargan dinámicamente después de que la página renderiza
+4. **Solución requerida:** Selenium WebDriver para ejecutar JavaScript
+
+### Implementación Recomendada para Fiorella
+```python
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+# Configurar Chrome en modo headless
+options = webdriver.ChromeOptions()
+options.add_argument('--headless')
+options.add_argument('--disable-gpu')
+
+driver = webdriver.Chrome(options=options)
+driver.get("https://kambista.com")
+
+# Esperar a que carguen las tasas (ajustar selector)
+wait = WebDriverWait(driver, 10)
+# Buscar elementos con las tasas...
+
+driver.quit()
+```
 
 ---
 
@@ -133,30 +132,65 @@ headers = {
 | **Nombre** | Rextie |
 | **Tipo** | Casa de cambio digital |
 | **URL** | https://rextie.com |
-| **Método de extracción** | Web Scraping |
-| **robots.txt** | Verificar antes de scraping |
+| **Estado** | ⚠️ **REQUIERE SELENIUM** |
 
-### Datos a Extraer
+### Análisis Técnico (20 Dic 2024)
 
-| Dato | Descripción | Ubicación en HTML |
-|------|-------------|-------------------|
-| Tasa de compra | Precio al que Rextie COMPRA dólares | Por inspeccionar |
-| Tasa de venta | Precio al que Rextie VENDE dólares | Por inspeccionar |
+**Resultado de prueba con requests + BeautifulSoup:**
+```
+❌ No se encontraron las tasas con el scraper básico
+Diagnóstico: Página dinámica (Angular framework)
+```
 
-### Proceso de Inspección
+### Hallazgo Importante
 
-Similar a Kambista:
-1. Abrir https://rextie.com
-2. Inspeccionar elementos con tasas
-3. Identificar selectores
-4. Determinar si es estático o dinámico
+Al analizar el HTML completo de la página, se encontró que **los datos SÍ están presentes** dentro del componente Angular, pero requieren renderización:
+```html
+<!-- Componente: app-gql-exchange-rate -->
+<div class="font-semibold text-xs"> s/ 3.3535 </div>  <!-- Compra -->
+<div class="font-semibold text-xs"> s/ 3.3825 </div>  <!-- Venta -->
+```
 
-### Consideraciones Éticas
+**Datos encontrados en el análisis:**
+- Compra: S/ 3.3535
+- Venta: S/ 3.3825
 
-Mismas que Kambista:
-- Frecuencia baja
-- Respetar robots.txt
-- No sobrecargar servidor
+### Estructura del HTML (para Sebastián)
+
+La página usa Angular y los datos están en:
+- Componente: `app-gql-exchange-rate`
+- Clase CSS de los valores: `font-semibold text-xs`
+- Los valores incluyen el prefijo "s/ "
+
+### Implementación Recomendada para Sebastián
+```python
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import re
+
+options = webdriver.ChromeOptions()
+options.add_argument('--headless')
+
+driver = webdriver.Chrome(options=options)
+driver.get("https://rextie.com")
+
+# Esperar a que cargue el componente de tasas
+wait = WebDriverWait(driver, 10)
+elemento = wait.until(
+    EC.presence_of_element_located((By.CSS_SELECTOR, "app-gql-exchange-rate"))
+)
+
+# Extraer el HTML del componente
+html = elemento.get_attribute('innerHTML')
+
+# Buscar los valores con regex
+valores = re.findall(r's/\s*([\d.]+)', html)
+# valores[0] = compra, valores[1] = venta
+
+driver.quit()
+```
 
 ---
 
@@ -164,49 +198,61 @@ Mismas que Kambista:
 
 | Característica | BCRP | Kambista | Rextie |
 |----------------|------|----------|--------|
-| Tipo de acceso | API | Scraping | Scraping |
+| Tipo de acceso | API REST | Web Scraping | Web Scraping |
+| Tecnología requerida | requests | Selenium | Selenium |
 | Frecuencia actualización | Diaria | Tiempo real | Tiempo real |
-| Confiabilidad | Alta | Media | Media |
-| Complejidad técnica | Baja | Media | Media |
-| Riesgo de bloqueo | Ninguno | Bajo | Bajo |
-| Tipo de tasa | Oficial/referencial | Comercial | Comercial |
+| Confiabilidad datos | Alta | Media | Media |
+| Complejidad técnica | Baja | Alta | Alta |
+| Riesgo de bloqueo | Ninguno | Medio | Medio |
+| Tipo de tasa | Oficial | Comercial | Comercial |
 
 ---
 
-## 5. Flujo de Verificación
+## 5. Requisitos de Instalación
 
-Antes de ejecutar el scraper, verificar:
+### Para BCRP (ya funcionando)
+```bash
+pip install requests
+```
 
+### Para Kambista y Rextie (Selenium)
+```bash
+pip install selenium webdriver-manager
 ```
-□ ¿La URL sigue siendo válida?
-□ ¿Los selectores CSS siguen funcionando?
-□ ¿Hay cambios en la estructura HTML?
-□ ¿El robots.txt permite scraping?
-□ ¿Hay algún CAPTCHA o bloqueo?
-```
+
+También se necesita Chrome o Firefox instalado.
 
 ---
 
-## 6. Plan de Contingencia
+## 6. Consideraciones Éticas
+
+- ✅ Frecuencia baja: máximo 1 petición por hora
+- ✅ Respetar robots.txt de cada sitio
+- ✅ No sobrecargar los servidores
+- ✅ User-agent identificable
+- ✅ Uso educativo/informativo
+
+---
+
+## 7. Plan de Contingencia
 
 | Problema | Solución |
 |----------|----------|
 | API BCRP caída | Registrar como NULL, continuar con otras fuentes |
-| Kambista cambió HTML | Actualizar selectores, notificar en logs |
-| Rextie bloqueó IP | Usar VPN o reducir frecuencia |
-| Datos inconsistentes | Validar rangos (3.5 < TC < 4.5) |
+| Kambista bloqueó acceso | Reducir frecuencia, rotar User-Agent |
+| Rextie cambió estructura | Actualizar selectores CSS |
+| Selenium no funciona | Verificar versión de Chrome/ChromeDriver |
 
 ---
 
-## 7. Referencias
+## 8. Conclusiones de la Investigación
 
-- [Documentación API BCRP](https://estadisticas.bcrp.gob.pe/estadisticas/series/ayuda/api)
-- [Kambista](https://kambista.com)
-- [Rextie](https://rextie.com)
-- [BeautifulSoup Documentation](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
-- [Requests Documentation](https://docs.python-requests.org/)
+1. **BCRP** es la fuente más confiable y fácil de implementar (API oficial)
+2. **Kambista** y **Rextie** requieren Selenium debido a su arquitectura JavaScript
+3. Los datos de Rextie están presentes en el HTML pero necesitan renderización
+4. Se recomienda implementar manejo robusto de errores para las fuentes web
 
 ---
 
-*Documento creado: 13/12/2024*
-*Última actualización: 13/12/2024*
+*Documento actualizado: 20/12/2024*
+*Investigación técnica: Javier Uraco (@JavierAnthonyUS)*
