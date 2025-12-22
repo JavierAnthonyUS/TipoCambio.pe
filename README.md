@@ -4,7 +4,7 @@
 [![Selenium](https://img.shields.io/badge/Selenium-4.39-green.svg)](https://www.selenium.dev/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Sistema automatizado para extraer, comparar y analizar tipos de cambio de múltiples fuentes en Perú. Desarrollado como proyecto final del curso **Lenguaje de Programación 2 (LP2)** - Universidad Nacional Agraria La Molina (UNALM), semestre 2025-1.
+Sistema automatizado para extraer, comparar y analizar tipos de cambio de múltiples fuentes en Perú. Desarrollado como proyecto final del curso **Lenguaje de Programación 2 (LP2)** - Universidad Nacional Agraria La Molina (UNALM), semestre 2025-2.
 
 ## 📋 Tabla de Contenidos
 
@@ -269,4 +269,4 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 
 ---
 
-**Desarrollado con ❤️ para LP2 - UNALM 2025-1**
+**Desarrollado con ❤️ para LP2 - UNALM 2025-2**
