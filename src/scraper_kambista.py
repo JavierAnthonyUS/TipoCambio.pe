@@ -21,7 +21,7 @@ from typing import Dict, Optional
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(_name_)
+logger = logging.getLogger(__name__)
 
 # Configuración
 URL_KAMBISTA = "https://kambista.com"
@@ -122,7 +122,7 @@ def obtener_tipo_cambio_kambista() -> Dict[str, Optional[float]]:
 # ============================================================
 # EJECUCIÓN PRINCIPAL (para testing)
 # ============================================================
-if _name_ == "_main_":
+if __name__ == "__main__":
     print("\n" + "=" * 50)
     print("   TEST: Scraper Kambista (Selenium)")
     print("=" * 50)
