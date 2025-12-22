@@ -1,241 +1,221 @@
 # 📋 Planificación del Proyecto
 
 ## TipoCambio.pe - Diseño y Desarrollo
+**Última actualización:** 22 de Diciembre, 2025  
+**Estado del proyecto:** ✅ COMPLETADO
 
 ---
 
-## 1. Objetivos del Proyecto
+## 👥 Equipo de Trabajo
 
-### Objetivo General
-Desarrollar un sistema automatizado de extracción y comparación de tipos de cambio de múltiples fuentes en Perú, generando un dataset histórico estructurado.
-
-### Objetivos Específicos
-1. Extraer datos del tipo de cambio oficial del BCRP mediante su API REST
-2. Realizar web scraping de casas de cambio digitales (Kambista, Rextie)
-3. Integrar las fuentes en un dataset unificado con estructura consistente
-4. Automatizar la extracción cada 1 hora con detección de cambios
-5. Documentar el código siguiendo buenas prácticas de Python
+| Integrante | GitHub | Rol |
+|------------|--------|-----|
+| Javier Uraco | @JavierAnthonyUS | Líder, BCRP, Rextie, Integrador, Análisis |
+| Fiorella Fuentes | @fiorellafuentesb20-cell | Scraper Kambista |
+| Sebastián Fernández | @TucoSquare | Documentación |
 
 ---
 
-## 2. Cronograma de Desarrollo
+## 📅 Cronograma de Desarrollo
 
-| Fase | Tarea | Responsable | Fecha | Estado |
-|------|-------|-------------|-------|--------|
-| 1 | Crear repositorio GitHub | Javier | 13/12/2025 | ✅ |
-| 1 | Definir estructura del proyecto | Equipo | 13/12/2025 | ✅ |
-| 2 | Desarrollar scraper BCRP | Javier | 14/12/2025 | ⏳ |
-| 2 | Desarrollar scraper Kambista | Fiorella | 14/12/2025 | ⏳ |
-| 2 | Desarrollar scraper Rextie | Sebastián | 14/12/2025 | ⏳ |
-| 3 | Integrar fuentes | Javier | 15/12/2025 | ⏳ |
-| 3 | Testing y correcciones | Equipo | 15/12/2025 | ⏳ |
-| 4 | Documentación final | Fiorella | 15/12/2025 | ⏳ |
-| 4 | Preparar presentación | Equipo | 16/12/2025 | ⏳ |
-| 5 | **Exposición final** | Equipo | 16/12/2025 | ⏳ |
+### Fase 1: Planificación y Diseño (16-18 Dic)
+| Tarea | Responsable | Estado |
+|-------|-------------|--------|
+| Definición del tema | Equipo | ✅ Completado |
+| Identificación de fuentes | Javier | ✅ Completado |
+| Diseño de arquitectura | Javier | ✅ Completado |
+| Creación de repositorio GitHub | Javier | ✅ Completado |
+| Presentación de propuesta | Equipo | ✅ Completado |
 
----
+### Fase 2: Desarrollo de Scrapers (19-20 Dic)
+| Tarea | Responsable | Estado |
+|-------|-------------|--------|
+| Scraper BCRP (API) | Javier | ✅ Completado |
+| Análisis técnico Kambista/Rextie | Javier | ✅ Completado |
+| Scraper Rextie (Selenium) | Javier | ✅ Completado |
+| Scraper Kambista (Selenium) | Fiorella | ✅ Completado |
 
-## 3. Diseño de la Extracción
+### Fase 3: Integración (20-21 Dic)
+| Tarea | Responsable | Estado |
+|-------|-------------|--------|
+| Módulo integrador | Javier | ✅ Completado |
+| Funciones auxiliares (utils.py) | Javier | ✅ Completado |
+| Generación de CSV | Javier | ✅ Completado |
+| Testing y correcciones | Equipo | ✅ Completado |
 
-### 3.1 Fuente 1: API BCRP
-
-**Endpoint:** 
-```
-https://estadisticas.bcrp.gob.pe/estadisticas/series/api/[series]/[formato]/[periodo_inicial]/[periodo_final]
-```
-
-**Series utilizadas:**
-- `PD04638PD` - Tipo de cambio compra
-- `PD04639PD` - Tipo de cambio venta
-
-**Proceso:**
-1. Construir URL con fecha actual
-2. Hacer petición GET con requests
-3. Parsear respuesta JSON
-4. Extraer valores de compra y venta
-5. Retornar diccionario con datos
-
-**Manejo de errores:**
-- Timeout de conexión
-- Error de parseo JSON
-- Datos no disponibles
-
-### 3.2 Fuente 2: Web Scraping Kambista
-
-**URL:** `https://kambista.com`
-
-**Proceso:**
-1. Hacer petición GET con headers de navegador
-2. Parsear HTML con BeautifulSoup
-3. Localizar elementos con tasas de cambio
-4. Extraer valores numéricos
-5. Retornar diccionario con datos
-
-**Selectores CSS/XPath:**
-- Tasa compra: (por definir tras inspección)
-- Tasa venta: (por definir tras inspección)
-
-**Consideraciones éticas:**
-- Respetar robots.txt
-- Frecuencia baja (1 petición/hora)
-- User-agent realista
-
-### 3.3 Fuente 3: Web Scraping Rextie
-
-**URL:** `https://rextie.com`
-
-**Proceso:** Similar a Kambista
-
-**Selectores CSS/XPath:**
-- Tasa compra: (por definir tras inspección)
-- Tasa venta: (por definir tras inspección)
+### Fase 4: Análisis y Documentación (21-22 Dic)
+| Tarea | Responsable | Estado |
+|-------|-------------|--------|
+| Notebook de análisis | Javier | ✅ Completado |
+| Documentación técnica | Sebastián | ✅ Completado |
+| README completo | Sebastián | ✅ Completado |
+| Revisión final | Equipo | ✅ Completado |
 
 ---
 
-## 4. Diseño de Integración de Datos
-
-### 4.1 Flujo de Datos
-
-```
-┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│  API BCRP   │     │  Kambista   │     │   Rextie    │
-└──────┬──────┘     └──────┬──────┘     └──────┬──────┘
-       │                   │                   │
-       ▼                   ▼                   ▼
-┌──────────────────────────────────────────────────────┐
-│                    INTEGRADOR                         │
-│  - Combina datos de 3 fuentes                        │
-│  - Calcula spreads                                   │
-│  - Determina mejor opción                            │
-│  - Detecta cambios vs registro anterior              │
-└──────────────────────────────────────────────────────┘
-       │
-       ▼
-┌──────────────────────────────────────────────────────┐
-│              tipo_cambio_historico.csv               │
-└──────────────────────────────────────────────────────┘
-```
-
-### 4.2 Lógica de Detección de Cambios
-
-```python
-def hubo_cambio(datos_nuevos, datos_anteriores):
-    """
-    Compara datos nuevos con el último registro.
-    Retorna True si algún valor cambió.
-    """
-    campos_a_comparar = [
-        'tc_bcrp_compra', 'tc_bcrp_venta',
-        'tc_kambista_compra', 'tc_kambista_venta',
-        'tc_rextie_compra', 'tc_rextie_venta'
-    ]
-    
-    for campo in campos_a_comparar:
-        if datos_nuevos[campo] != datos_anteriores[campo]:
-            return True
-    return False
-```
-
-### 4.3 Cálculo de Métricas
-
-```python
-# Spread = Venta - Compra
-spread_bcrp = tc_bcrp_venta - tc_bcrp_compra
-spread_kambista = tc_kambista_venta - tc_kambista_compra
-spread_rextie = tc_rextie_venta - tc_rextie_compra
-
-# Mejor opción para COMPRAR dólares (quiero el precio más bajo de venta)
-mejor_compra = min([
-    ('BCRP', tc_bcrp_venta),
-    ('Kambista', tc_kambista_venta),
-    ('Rextie', tc_rextie_venta)
-], key=lambda x: x[1])[0]
-
-# Mejor opción para VENDER dólares (quiero el precio más alto de compra)
-mejor_venta = max([
-    ('BCRP', tc_bcrp_compra),
-    ('Kambista', tc_kambista_compra),
-    ('Rextie', tc_rextie_compra)
-], key=lambda x: x[1])[0]
-```
-
----
-
-## 5. Estructura del CSV Final
-
-### Ejemplo de registro:
-
-```csv
-timestamp,tc_bcrp_compra,tc_bcrp_venta,tc_kambista_compra,tc_kambista_venta,tc_rextie_compra,tc_rextie_venta,spread_bcrp,spread_kambista,spread_rextie,mejor_compra,mejor_venta
-2025-12-13 10:00:00,3.720,3.760,3.735,3.755,3.730,3.750,0.040,0.020,0.020,Rextie,Kambista
-```
-
----
-
-## 6. Automatización
-
-### Usando schedule (Python)
-
-```python
-import schedule
-import time
-
-def job():
-    print("Ejecutando extracción...")
-    ejecutar_extraccion()
-
-# Programar cada 1 hora
-schedule.every(1).hours.do(job)
-
-while True:
-    schedule.run_pending()
-    time.sleep(60)
-```
-
----
-
-## 7. Distribución de Trabajo
+## 📊 Distribución de Commits por Integrante
 
 ### Javier Uraco (@JavierAnthonyUS)
-- [x] Crear repositorio GitHub
-- [ ] Desarrollar `scraper_bcrp.py`
-- [ ] Desarrollar `integrador.py`
-- [ ] Configurar automatización
+- [x] Estructura inicial del proyecto
+- [x] Scraper BCRP con API
+- [x] Documentación de investigación técnica
+- [x] Corrección de fechas 2024→2025
+- [x] Scraper Rextie con Selenium
+- [x] Limpieza de archivos temporales
+- [x] Sistema integrador completo
+- [x] Notebook de análisis con gráficos
 
 ### Fiorella Fuentes (@fiorellafuentesb20-cell)
-- [ ] Desarrollar `scraper_kambista.py`
-- [ ] Documentar fuentes de datos
-- [ ] Crear diccionario de datos
-- [ ] Revisar README
+- [x] Scraper Kambista con Selenium
+- [x] Corrección de sintaxis __name__
 
 ### Sebastián Fernández (@TucoSquare)
-- [ ] Desarrollar `scraper_rextie.py`
-- [ ] Desarrollar `utils.py`
-- [ ] Testing de scrapers
-- [ ] Preparar datos de ejemplo
+- [x] README mejorado con estructura completa
+- [x] Revisión de documentación
 
 ---
 
-## 8. Riesgos Identificados
+## 🏗️ Arquitectura del Sistema
 
-| Riesgo | Probabilidad | Impacto | Mitigación |
-|--------|--------------|---------|------------|
-| Bloqueo por scraping | Media | Alto | Frecuencia baja, headers realistas |
-| Cambio en estructura HTML | Alta | Medio | Código modular, fácil actualización |
-| API BCRP caída | Baja | Medio | Try-catch, continuar con otras fuentes |
-| Conflictos en Git | Media | Bajo | Comunicación, ramas separadas |
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    SISTEMA DE EXTRACCIÓN                     │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐       │
+│  │  BCRP API    │  │   Kambista   │  │    Rextie    │       │
+│  │  (requests)  │  │  (Selenium)  │  │  (Selenium)  │       │
+│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘       │
+│         │                 │                 │                │
+│         └────────────┬────┴────────────────┘                │
+│                      │                                       │
+│              ┌───────▼───────┐                              │
+│              │  INTEGRADOR   │                              │
+│              │ (integrador.py)│                              │
+│              └───────┬───────┘                              │
+│                      │                                       │
+│         ┌────────────┼────────────┐                         │
+│         │            │            │                         │
+│  ┌──────▼──────┐ ┌───▼───┐ ┌─────▼─────┐                   │
+│  │ Cálculos    │ │ CSV   │ │ Resumen   │                   │
+│  │ (spreads,   │ │ datos │ │ consola   │                   │
+│  │  mejor op.) │ │       │ │           │                   │
+│  └─────────────┘ └───────┘ └───────────┘                   │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ---
 
-## 9. Criterios de Éxito
+## 🔧 Diseño Técnico de Scrapers
 
-- ✅ Extracción funcional de 3 fuentes
-- ✅ Dataset CSV con al menos 24 registros (1 día de datos)
-- ✅ Código documentado con docstrings
-- ✅ Commits de todos los integrantes en GitHub
-- ✅ Exposición clara de 20-25 minutos
+### BCRP (API REST)
+```
+Método: requests.get()
+Formato: JSON
+Autenticación: No requerida
+Endpoint: /estadisticas/series/api/{series}/json/{fecha_inicio}/{fecha_fin}
+Series: PD04638PD (compra), PD04639PD (venta)
+```
+
+### Kambista (Web Scraping Dinámico)
+```
+Método: Selenium + Chrome headless
+Espera: 3 segundos para carga de JavaScript
+Extracción: regex sobre page_source
+Patrón: [\d]+\.[\d]{2,4}
+Filtro: Valores entre 3.30 y 3.50
+Resultado: Menor = compra, Mayor = venta
+```
+
+### Rextie (Web Scraping Dinámico)
+```
+Método: Selenium + Chrome headless
+Espera: 3 segundos para carga de JavaScript
+Extracción: regex sobre page_source
+Patrón: [\d]+\.[\d]{2,4}
+Filtro: Valores entre 3.30 y 3.50
+Resultado: Menor = compra, Mayor = venta
+```
 
 ---
 
-*Documento creado: 13/12/2025*
-*Última actualización: 13/12/2025*
+## 📁 Estructura Final del Proyecto
+
+```
+tipo-cambio-peru/
+│
+├── data/
+│   ├── processed/
+│   │   └── tipo_cambio_historico.csv    ✅
+│   └── raw/
+│       └── .gitkeep
+│
+├── docs/
+│   ├── PLANIFICACION.md                  ✅
+│   ├── FUENTES_DATOS.md                  ✅
+│   └── DICCIONARIO_DATOS.md              ✅
+│
+├── notebooks/
+│   └── analisis_exploratorio.ipynb       ✅
+│
+├── src/
+│   ├── __init__.py                       ✅
+│   ├── scraper_bcrp.py                   ✅
+│   ├── scraper_kambista.py               ✅
+│   ├── scraper_rextie.py                 ✅
+│   ├── integrador.py                     ✅
+│   ├── main.py                           ✅
+│   └── utils.py                          ✅
+│
+├── logs/
+│   └── .gitkeep
+│
+├── .gitignore                            ✅
+├── LICENSE                               ✅
+├── README.md                             ✅
+└── requirements.txt                      ✅
+```
+
+---
+
+## ✅ Criterios de Éxito
+
+| Criterio | Meta | Estado |
+|----------|------|--------|
+| Fuentes de datos | Mínimo 3 | ✅ 3 fuentes (BCRP, Kambista, Rextie) |
+| Métodos de extracción | API + Scraping | ✅ 1 API + 2 Selenium |
+| CSV estructurado | Datos válidos | ✅ 13 columnas, datos reales |
+| Código documentado | Docstrings | ✅ Todos los archivos |
+| Trabajo colaborativo | Commits de todos | ✅ 3 integrantes con commits |
+| Análisis de datos | Notebook | ✅ Con gráficos comparativos |
+| Documentación | Completa | ✅ README + 3 docs técnicos |
+
+---
+
+## 📈 Métricas del Proyecto
+
+| Métrica | Valor |
+|---------|-------|
+| Total de archivos Python | 6 |
+| Total de archivos de documentación | 4 |
+| Total de commits | 12+ |
+| Fuentes de datos | 3 |
+| Columnas en CSV | 13 |
+| Integrantes activos | 3 |
+
+---
+
+## 🎯 Lecciones Aprendidas
+
+1. **Páginas dinámicas:** Kambista y Rextie requirieron Selenium porque cargan datos con JavaScript.
+
+2. **APIs vs Scraping:** BCRP con API es más confiable y rápido. Selenium es necesario pero más frágil.
+
+3. **Trabajo colaborativo:** GitHub permitió coordinar el trabajo entre 3 personas con diferentes horarios.
+
+4. **Documentación:** Documentar el diseño antes de programar ayudó a mantener el proyecto organizado.
+
+5. **Testing:** Probar cada scraper individualmente antes de integrar evitó errores difíciles de depurar.
+
+---

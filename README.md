@@ -1,10 +1,13 @@
 # 💱 Comparador de Tipo de Cambio en Perú
 
-[![Python](https://img.shields.io/badge/Python-3.13-blue.svg)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
 [![Selenium](https://img.shields.io/badge/Selenium-4.39-green.svg)](https://www.selenium.dev/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-Production-brightgreen.svg)]()
 
 Sistema automatizado para extraer, comparar y analizar tipos de cambio de múltiples fuentes en Perú. Desarrollado como proyecto final del curso **Lenguaje de Programación 2 (LP2)** - Universidad Nacional Agraria La Molina (UNALM), semestre 2025-2.
+
+---
 
 ## 📋 Tabla de Contenidos
 
@@ -21,6 +24,8 @@ Sistema automatizado para extraer, comparar y analizar tipos de cambio de múlti
 - [Dificultades y Soluciones](#-dificultades-y-soluciones)
 - [Licencia](#-licencia)
 
+---
+
 ## 📝 Descripción
 
 En Perú existen múltiples casas de cambio con diferentes tasas para compra y venta de dólares. Este proyecto automatiza la extracción de tipos de cambio de 3 fuentes diferentes, permitiendo:
@@ -30,6 +35,8 @@ En Perú existen múltiples casas de cambio con diferentes tasas para compra y v
 - **Almacenar** datos históricos para análisis
 - **Visualizar** diferencias mediante gráficos
 
+---
+
 ## 👥 Equipo
 
 | Integrante | GitHub | Rol | Contribuciones |
@@ -38,24 +45,28 @@ En Perú existen múltiples casas de cambio con diferentes tasas para compra y v
 | Fiorella Fuentes | [@fiorellafuentesb20-cell](https://github.com/fiorellafuentesb20-cell) | Desarrolladora | Scraper Kambista |
 | Sebastián Fernández | [@TucoSquare](https://github.com/TucoSquare) | Documentación | README, documentación técnica |
 
+---
+
 ## ✨ Características
 
 - ✅ Extracción automatizada de 3 fuentes de tipo de cambio
 - ✅ Manejo de páginas estáticas (API) y dinámicas (Selenium)
 - ✅ Cálculo automático de spreads
 - ✅ Identificación de mejor opción compra/venta
-- ✅ Almacenamiento histórico en CSV
+- ✅ Almacenamiento histórico en CSV (13 columnas)
 - ✅ Análisis exploratorio con visualizaciones
 - ✅ Código documentado con docstrings
 - ✅ Detección de cambios para evitar duplicados
+
+---
 
 ## 📊 Fuentes de Datos
 
 | Fuente | Tipo | Método | URL | Estado |
 |--------|------|--------|-----|--------|
-| **BCRP** | API Oficial | requests + JSON | [estadisticas.bcrp.gob.pe](https://estadisticas.bcrp.gob.pe) | ✅ Funcionando |
-| **Kambista** | Web Scraping | Selenium | [kambista.com](https://kambista.com) | ✅ Funcionando |
-| **Rextie** | Web Scraping | Selenium | [rextie.com](https://rextie.com) | ✅ Funcionando |
+| **BCRP** | API Oficial | requests + JSON | [estadisticas.bcrp.gob.pe](https://estadisticas.bcrp.gob.pe) | ✅ Producción |
+| **Kambista** | Web Scraping | Selenium + regex | [kambista.com](https://kambista.com) | ✅ Producción |
+| **Rextie** | Web Scraping | Selenium + regex | [rextie.com](https://rextie.com) | ✅ Producción |
 
 ### ¿Por qué estas fuentes?
 
@@ -63,43 +74,49 @@ En Perú existen múltiples casas de cambio con diferentes tasas para compra y v
 - **Kambista**: Casa de cambio digital líder en Perú. Tasas competitivas para el público general.
 - **Rextie**: Casa de cambio digital con altos volúmenes. Popular entre empresas y personas naturales.
 
+---
+
 ## 🛠 Tecnologías Utilizadas
 
 | Tecnología | Versión | Uso |
 |------------|---------|-----|
-| Python | 3.13 | Lenguaje principal |
+| Python | 3.10+ | Lenguaje principal |
 | Pandas | 2.2+ | Manipulación de datos |
-| Requests | 2.32+ | Consumo de APIs |
-| BeautifulSoup4 | 4.12+ | Parsing HTML |
-| Selenium | 4.39+ | Web scraping dinámico |
+| Requests | 2.32+ | Consumo de API BCRP |
+| Selenium | 4.39+ | Web scraping de páginas dinámicas |
 | Webdriver Manager | 4.0+ | Gestión automática de ChromeDriver |
 | Matplotlib | 3.10+ | Visualización de datos |
 | Jupyter | 1.1+ | Notebooks de análisis |
 
+> **Nota:** BeautifulSoup fue evaluado inicialmente pero descartado porque Kambista y Rextie son páginas dinámicas que requieren Selenium para renderizar el JavaScript.
+
+---
+
 ## 📁 Estructura del Proyecto
+
 ```
 tipo-cambio-peru/
 │
 ├── 📁 data/
 │   ├── 📁 processed/
-│   │   └── 📄 tipo_cambio_historico.csv    # Datos integrados
+│   │   └── 📄 tipo_cambio_historico.csv    # Datos integrados (13 columnas)
 │   └── 📁 raw/                              # Datos crudos
 │
 ├── 📁 docs/
 │   ├── 📄 PLANIFICACION.md                  # Cronograma y diseño
-│   ├── 📄 FUENTES_DATOS.md                  # Documentación técnica
-│   └── 📄 DICCIONARIO_DATOS.md              # Descripción de columnas
+│   ├── 📄 FUENTES_DATOS.md                  # Documentación técnica de fuentes
+│   └── 📄 DICCIONARIO_DATOS.md              # Descripción de columnas del CSV
 │
 ├── 📁 notebooks/
 │   └── 📓 analisis_exploratorio.ipynb       # Análisis con gráficos
 │
 ├── 📁 src/
 │   ├── 📄 __init__.py
-│   ├── 📄 scraper_bcrp.py                   # Extractor BCRP (API)
+│   ├── 📄 scraper_bcrp.py                   # Extractor BCRP (API REST)
 │   ├── 📄 scraper_kambista.py               # Extractor Kambista (Selenium)
 │   ├── 📄 scraper_rextie.py                 # Extractor Rextie (Selenium)
 │   ├── 📄 integrador.py                     # Combina todas las fuentes
-│   ├── 📄 main.py                           # Punto de entrada
+│   ├── 📄 main.py                           # Automatización con schedule
 │   └── 📄 utils.py                          # Funciones auxiliares
 │
 ├── 📁 logs/                                 # Archivos de log
@@ -108,6 +125,8 @@ tipo-cambio-peru/
 ├── 📄 README.md                             # Este archivo
 └── 📄 requirements.txt                      # Dependencias
 ```
+
+---
 
 ## 🚀 Instalación
 
@@ -125,27 +144,26 @@ git clone https://github.com/JavierAnthonyUS/tipo-cambio-peru.git
 cd tipo-cambio-peru
 ```
 
-2. **Instalar dependencias básicas**
+2. **Instalar dependencias**
 ```bash
 pip install -r requirements.txt
-```
-
-3. **Instalar dependencias para Selenium**
-```bash
 pip install selenium webdriver-manager
 ```
 
-4. **Verificar instalación**
+3. **Verificar instalación**
 ```bash
 cd src
 python scraper_bcrp.py
 ```
+
+---
 
 ## 💻 Uso
 
 ### Extracción completa (recomendado)
 
 Ejecuta el integrador para obtener datos de las 3 fuentes:
+
 ```bash
 cd src
 python integrador.py
@@ -176,8 +194,9 @@ python integrador.py
 ```
 
 ### Scrapers individuales
+
 ```bash
-# Solo BCRP (API)
+# Solo BCRP (API - más rápido)
 python scraper_bcrp.py
 
 # Solo Kambista (Selenium)
@@ -190,48 +209,58 @@ python scraper_rextie.py
 ### Análisis exploratorio
 
 Abre el notebook de Jupyter:
+
 ```bash
 cd notebooks
 jupyter notebook analisis_exploratorio.ipynb
 ```
 
+---
+
 ## 📈 Resultados
 
 ### Estructura del CSV generado
 
-El archivo `data/processed/tipo_cambio_historico.csv` contiene:
+El archivo `data/processed/tipo_cambio_historico.csv` contiene 13 columnas:
 
-| Columna | Tipo | Descripción |
-|---------|------|-------------|
-| timestamp | datetime | Fecha y hora de extracción |
-| tc_bcrp_compra | float | Tipo de cambio compra BCRP |
-| tc_bcrp_venta | float | Tipo de cambio venta BCRP |
-| tc_kambista_compra | float | Tipo de cambio compra Kambista |
-| tc_kambista_venta | float | Tipo de cambio venta Kambista |
-| tc_rextie_compra | float | Tipo de cambio compra Rextie |
-| tc_rextie_venta | float | Tipo de cambio venta Rextie |
-| spread_bcrp | float | Diferencia venta-compra BCRP |
-| spread_kambista | float | Diferencia venta-compra Kambista |
-| spread_rextie | float | Diferencia venta-compra Rextie |
-| mejor_compra | string | Mejor fuente para comprar USD |
-| mejor_venta | string | Mejor fuente para vender USD |
-| cambio_detectado | boolean | Si hubo cambio respecto al registro anterior |
+| Columna | Descripción |
+|---------|-------------|
+| `timestamp` | Fecha y hora de extracción |
+| `tc_bcrp_compra` | Tipo de cambio compra BCRP |
+| `tc_bcrp_venta` | Tipo de cambio venta BCRP |
+| `tc_kambista_compra` | Tipo de cambio compra Kambista |
+| `tc_kambista_venta` | Tipo de cambio venta Kambista |
+| `tc_rextie_compra` | Tipo de cambio compra Rextie |
+| `tc_rextie_venta` | Tipo de cambio venta Rextie |
+| `spread_bcrp` | Diferencia venta-compra BCRP |
+| `spread_kambista` | Diferencia venta-compra Kambista |
+| `spread_rextie` | Diferencia venta-compra Rextie |
+| `mejor_compra` | Mejor fuente para comprar USD |
+| `mejor_venta` | Mejor fuente para vender USD |
+| `cambio_detectado` | Si hubo cambio respecto al registro anterior |
 
-### Ejemplo de visualización
+### Nota sobre spreads negativos
 
-El notebook genera gráficos comparativos como:
+El BCRP puede mostrar **spreads negativos** porque sus tasas son valores de referencia del mercado interbancario, no precios para el público general. Esto es normal y no indica un error en la extracción.
 
+### Visualizaciones
+
+El notebook genera gráficos comparativos:
 - Comparación de tipos de cambio por fuente (barras horizontales)
 - Análisis de spreads por casa de cambio
 - Resumen y recomendaciones
+
+---
 
 ## 📚 Documentación
 
 | Documento | Descripción |
 |-----------|-------------|
 | [PLANIFICACION.md](docs/PLANIFICACION.md) | Cronograma, fases del proyecto, distribución de tareas |
-| [FUENTES_DATOS.md](docs/FUENTES_DATOS.md) | Documentación técnica de cada fuente, endpoints, selectores |
+| [FUENTES_DATOS.md](docs/FUENTES_DATOS.md) | Documentación técnica de cada fuente, endpoints, implementación |
 | [DICCIONARIO_DATOS.md](docs/DICCIONARIO_DATOS.md) | Descripción detallada de cada columna del CSV |
+
+---
 
 ## 🔧 Dificultades y Soluciones
 
@@ -245,23 +274,27 @@ El notebook genera gráficos comparativos como:
 
 **Problema:** El HTML renderizado contiene muchos números. ¿Cómo identificar cuáles son tipos de cambio?
 
-**Solución:** Usamos expresiones regulares y filtrado por rango válido (3.30 - 3.50 para PEN/USD).
+**Solución:** Usamos expresiones regulares (`[\d]+\.[\d]{2,4}`) y filtrado por rango válido (3.30 - 3.50 para PEN/USD).
 
 ### 3. Manejo de errores
 
 **Problema:** Las páginas web pueden fallar, cambiar estructura o estar caídas.
 
-**Solución:** Implementamos manejo robusto de excepciones con logging detallado.
+**Solución:** Implementamos manejo robusto de excepciones con logging detallado y valores de retorno que indican éxito/fallo.
 
 ### 4. Trabajo colaborativo
 
 **Problema:** Coordinar el trabajo entre 3 personas con diferentes horarios.
 
-**Solución:** Usamos GitHub para control de versiones con commits descriptivos y branches.
+**Solución:** Usamos GitHub para control de versiones con commits descriptivos siguiendo convenciones (`feat:`, `fix:`, `docs:`).
+
+---
 
 ## 🤝 Contribuciones
 
-Este es un proyecto académico cerrado. Sin embargo, las sugerencias son bienvenidas a través de Issues.
+Este es un proyecto académico. Las sugerencias son bienvenidas a través de Issues.
+
+---
 
 ## 📝 Licencia
 

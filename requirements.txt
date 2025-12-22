@@ -1,22 +1,25 @@
-# TipoCambio.pe - Dependencias
-# Instalar con: pip install -r requirements.txt
+# ================================================================================
+# DEPENDENCIAS DEL PROYECTO: Comparador de Tipo de Cambio en Perú - TipoCambio.pe
+# Curso: LP2 - UNALM 2025-2
+# ================================================================================
 
-# Peticiones HTTP
-requests>=2.28.0
+# --- Extracción de datos ---
+requests>=2.32.0          # Consumo de API BCRP
+beautifulsoup4>=4.12.0    # Parsing HTML (usado en prototipos)
+selenium>=4.39.0          # Web scraping de páginas dinámicas
+webdriver-manager>=4.0.2  # Gestión automática de ChromeDriver
 
-# Web Scraping
-beautifulsoup4>=4.11.0
-lxml>=4.9.0
+# --- Manipulación de datos ---
+pandas>=2.2.0             # DataFrames y CSV
 
-# Manipulación de datos
-pandas>=1.5.0
+# --- Visualización ---
+matplotlib>=3.10.0        # Gráficos
 
-# Automatización de tareas
-schedule>=1.1.0
+# --- Notebooks ---
+jupyter>=1.1.0            # Jupyter notebooks
 
-# Para scraping dinámico (opcional)
-# selenium>=4.8.0
-# webdriver-manager>=3.8.0
+# --- Automatización ---
+schedule>=1.2.0           # Tareas programadas
 
-# Utilidades
-python-dateutil>=2.8.0
+# --- Utilidades ---
+python-dateutil>=2.9.0    # Manejo de fechas
