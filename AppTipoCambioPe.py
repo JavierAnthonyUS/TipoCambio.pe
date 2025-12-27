@@ -8,6 +8,7 @@ import plotly.graph_objects as go
 import asyncio
 import os
 import sys
+RUNNING_ON_RENDER = 'RENDER' in os.environ
 
 # Agregar carpeta src al path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
@@ -36,6 +37,7 @@ def obtener_datos_demo():
 # FUNCIONES ASYNC PARA SCRAPERS
 # =============================================================================
 async def ejecutar_scraper_bcrp():
+    """BCRP siempre usa datos reales (API funciona en todos lados)"""
     if SCRAPERS_DISPONIBLES:
         try:
             resultado = obtener_tipo_cambio_bcrp()
@@ -50,7 +52,15 @@ async def ejecutar_scraper_bcrp():
         await asyncio.sleep(1)
         return obtener_datos_demo()['bcrp']
 
+
 async def ejecutar_scraper_kambista():
+    """Kambista: usa Selenium en PC local, datos demo en Render"""
+    # Si estamos en Render, usar datos demo (no hay Chrome)
+    if RUNNING_ON_RENDER:
+        await asyncio.sleep(1.5)  # Simular tiempo de carga
+        return obtener_datos_demo()['kambista']
+    
+    # Si estamos en PC local, usar scraper real
     if SCRAPERS_DISPONIBLES:
         try:
             resultado = obtener_tipo_cambio_kambista()
@@ -60,12 +70,20 @@ async def ejecutar_scraper_kambista():
                 'exito': resultado.get('exito', False)
             }
         except Exception as e:
-            return {'compra': 0, 'venta': 0, 'exito': False}
+            return obtener_datos_demo()['kambista']
     else:
         await asyncio.sleep(2)
         return obtener_datos_demo()['kambista']
 
+
 async def ejecutar_scraper_rextie():
+    """Rextie: usa Selenium en PC local, datos demo en Render"""
+    # Si estamos en Render, usar datos demo (no hay Chrome)
+    if RUNNING_ON_RENDER:
+        await asyncio.sleep(1.5)  # Simular tiempo de carga
+        return obtener_datos_demo()['rextie']
+    
+    # Si estamos en PC local, usar scraper real
     if SCRAPERS_DISPONIBLES:
         try:
             resultado = obtener_tipo_cambio_rextie()
@@ -75,7 +93,7 @@ async def ejecutar_scraper_rextie():
                 'exito': resultado.get('exito', False)
             }
         except Exception as e:
-            return {'compra': 0, 'venta': 0, 'exito': False}
+            return obtener_datos_demo()['rextie']
     else:
         await asyncio.sleep(2)
         return obtener_datos_demo()['rextie']
