@@ -28,9 +28,9 @@ except ImportError:
 # =============================================================================
 def obtener_datos_demo():
     return {
-        'bcrp': {'compra': 3.7320, 'venta': 3.7350, 'exito': True},
-        'kambista': {'compra': 3.7100, 'venta': 3.7550, 'exito': True},
-        'rextie': {'compra': 3.7200, 'venta': 3.7480, 'exito': True},
+        'bcrp': {'compra': 3.3670, 'venta': 3.3620, 'exito': True},
+        'kambista': {'compra': 3.3300, 'venta': 3.4860, 'exito': True},
+        'rextie': {'compra': 3.3390, 'venta': 3.3810, 'exito': True},
     }
 
 # =============================================================================
