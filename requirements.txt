@@ -14,7 +14,7 @@ pandas>=2.2.0             # DataFrames y CSV
 
 # --- Visualización ---
 matplotlib>=3.10.0        # Gráficos
-
+jupyter>=1.1.0
 # --- Notebooks ---
 jupyter>=1.1.0            # Jupyter notebooks
 
@@ -23,3 +23,7 @@ schedule>=1.2.0           # Tareas programadas
 
 # --- Utilidades ---
 python-dateutil>=2.9.0    # Manejo de fechas
+
+# --- APLICACIÓN WEB ---
+nicegui>=3.4.0
+plotly>=6.5.0
