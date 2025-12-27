@@ -2,10 +2,11 @@
 
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
 [![Selenium](https://img.shields.io/badge/Selenium-4.39-green.svg)](https://www.selenium.dev/)
+[![NiceGUI](https://img.shields.io/badge/NiceGUI-3.4-cyan.svg)](https://nicegui.io/)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Production-brightgreen.svg)]()
 
-Sistema automatizado para extraer, comparar y analizar tipos de cambio de múltiples fuentes en Perú. Desarrollado como proyecto final del curso **Lenguaje de Programación 2 (LP2)** - Universidad Nacional Agraria La Molina (UNALM), semestre 2025-2.
+Sistema automatizado para extraer, comparar y analizar tipos de cambio de múltiples fuentes en Perú. **Incluye aplicación web interactiva** para visualización en tiempo real. Desarrollado como proyecto final del curso **Lenguaje de Programación 2 (LP2)** - Universidad Nacional Agraria La Molina (UNALM), semestre 2025-2.
 
 ---
 
@@ -19,6 +20,7 @@ Sistema automatizado para extraer, comparar y analizar tipos de cambio de múlti
 - [Estructura del Proyecto](#-estructura-del-proyecto)
 - [Instalación](#-instalación)
 - [Uso](#-uso)
+- [Aplicación Web](#-aplicación-web)
 - [Resultados](#-resultados)
 - [Documentación](#-documentación)
 - [Dificultades y Soluciones](#-dificultades-y-soluciones)
@@ -32,8 +34,9 @@ En Perú existen múltiples casas de cambio con diferentes tasas para compra y v
 
 - **Comparar** tasas de cambio en tiempo real
 - **Identificar** la mejor opción para comprar o vender dólares
-- **Almacenar** datos históricos para análisis
-- **Visualizar** diferencias mediante gráficos
+- **Visualizar** diferencias mediante gráficos interactivos
+- **Calcular** el ahorro potencial al elegir la mejor opción
+- **Interactuar** a través de una aplicación web moderna
 
 ---
 
@@ -41,21 +44,31 @@ En Perú existen múltiples casas de cambio con diferentes tasas para compra y v
 
 | Integrante | GitHub | Rol | Contribuciones |
 |------------|--------|-----|----------------|
-| Javier Uraco | [@JavierAnthonyUS](https://github.com/JavierAnthonyUS) | Líder del proyecto | Estructura, BCRP, Rextie, Integrador, Notebook |
-| Fiorella Fuentes | [@fiorellafuentesb20-cell](https://github.com/fiorellafuentesb20-cell) | Desarrolladora | Scraper Kambista |
+| Javier Uraco | [@JavierAnthonyUS](https://github.com/JavierAnthonyUS) | Líder del proyecto | BCRP, Rextie, Integrador, App Web, Notebook |
+| Fiorella Fuentes | [@fiorellafuentesb20-cell](https://github.com/fiorellafuentesb20-cell) | Desarrolladora | Scraper Kambista | App Web |
 | Sebastián Fernández | [@TucoSquare](https://github.com/TucoSquare) | Documentación | README, documentación técnica |
 
 ---
 
 ## ✨ Características
 
+### Scrapers
 - ✅ Extracción automatizada de 3 fuentes de tipo de cambio
 - ✅ Manejo de páginas estáticas (API) y dinámicas (Selenium)
 - ✅ Cálculo automático de spreads
 - ✅ Identificación de mejor opción compra/venta
+
+### Aplicación Web
+- ✅ Interfaz moderna con tema oscuro
+- ✅ Ejecución de scrapers con un click
+- ✅ Gráficos interactivos con Plotly
+- ✅ Calculadora de ahorro en tiempo real
+- ✅ Recomendación automática de mejor opción
+- ✅ 100% Python (sin HTML/CSS/JS manual)
+
+### Datos
 - ✅ Almacenamiento histórico en CSV (13 columnas)
 - ✅ Análisis exploratorio con visualizaciones
-- ✅ Código documentado con docstrings
 - ✅ Detección de cambios para evitar duplicados
 
 ---
@@ -81,14 +94,15 @@ En Perú existen múltiples casas de cambio con diferentes tasas para compra y v
 | Tecnología | Versión | Uso |
 |------------|---------|-----|
 | Python | 3.10+ | Lenguaje principal |
+| **NiceGUI** | 3.4+ | **Aplicación web interactiva** |
+| **Plotly** | 6.5+ | **Gráficos interactivos** |
 | Pandas | 2.2+ | Manipulación de datos |
 | Requests | 2.32+ | Consumo de API BCRP |
 | Selenium | 4.39+ | Web scraping de páginas dinámicas |
 | Webdriver Manager | 4.0+ | Gestión automática de ChromeDriver |
-| Matplotlib | 3.10+ | Visualización de datos |
-| Jupyter | 1.1+ | Notebooks de análisis |
+| Matplotlib | 3.10+ | Visualización en notebooks |
 
-> **Nota:** BeautifulSoup fue evaluado inicialmente pero descartado porque Kambista y Rextie son páginas dinámicas que requieren Selenium para renderizar el JavaScript.
+> **Nota:** NiceGUI permite crear aplicaciones web modernas usando solo Python, sin necesidad de HTML, CSS o JavaScript.
 
 ---
 
@@ -97,33 +111,33 @@ En Perú existen múltiples casas de cambio con diferentes tasas para compra y v
 ```
 tipo-cambio-peru/
 │
+├── 📄 AppTipoCambioPe.py          
 ├── 📁 data/
 │   ├── 📁 processed/
-│   │   └── 📄 tipo_cambio_historico.csv    # Datos integrados (13 columnas)
-│   └── 📁 raw/                              # Datos crudos
+│   │   └── 📄 tipo_cambio_historico.csv
+│   └── 📁 raw/
 │
 ├── 📁 docs/
-│   ├── 📄 PLANIFICACION.md                  # Cronograma y diseño
-│   ├── 📄 FUENTES_DATOS.md                  # Documentación técnica de fuentes
-│   └── 📄 DICCIONARIO_DATOS.md              # Descripción de columnas del CSV
+│   ├── 📄 PLANIFICACION.md
+│   ├── 📄 FUENTES_DATOS.md
+│   └── 📄 DICCIONARIO_DATOS.md
 │
 ├── 📁 notebooks/
-│   └── 📓 analisis_exploratorio.ipynb       # Análisis con gráficos
+│   └── 📓 analisis_exploratorio.ipynb
 │
 ├── 📁 src/
 │   ├── 📄 __init__.py
-│   ├── 📄 scraper_bcrp.py                   # Extractor BCRP (API REST)
-│   ├── 📄 scraper_kambista.py               # Extractor Kambista (Selenium)
-│   ├── 📄 scraper_rextie.py                 # Extractor Rextie (Selenium)
-│   ├── 📄 integrador.py                     # Combina todas las fuentes
-│   ├── 📄 main.py                           # Automatización con schedule
-│   └── 📄 utils.py                          # Funciones auxiliares
+│   ├── 📄 scraper_bcrp.py          # Extractor BCRP (API REST)
+│   ├── 📄 scraper_kambista.py      # Extractor Kambista (Selenium)
+│   ├── 📄 scraper_rextie.py        # Extractor Rextie (Selenium)
+│   ├── 📄 integrador.py            # Combina todas las fuentes
+│   └── 📄 utils.py                 # Funciones auxiliares
 │
-├── 📁 logs/                                 # Archivos de log
+├── 📁 logs/
 ├── 📄 .gitignore
-├── 📄 LICENSE                               # MIT License
-├── 📄 README.md                             # Este archivo
-└── 📄 requirements.txt                      # Dependencias
+├── 📄 LICENSE
+├── 📄 README.md
+└── 📄 requirements.txt
 ```
 
 ---
@@ -147,73 +161,79 @@ cd tipo-cambio-peru
 2. **Instalar dependencias**
 ```bash
 pip install -r requirements.txt
-pip install selenium webdriver-manager
 ```
 
-3. **Verificar instalación**
+3. **Ejecutar la aplicación web**
 ```bash
-cd src
-python scraper_bcrp.py
+python AppTipoCambioPe.py
+```
+
+4. **Abrir en el navegador**
+```
+http://localhost:8080
 ```
 
 ---
 
 ## 💻 Uso
 
-### Extracción completa (recomendado)
+### 🌐 Aplicación Web (Recomendado)
 
-Ejecuta el integrador para obtener datos de las 3 fuentes:
+La forma más fácil de usar el proyecto:
+
+```bash
+python AppTipoCambioPe.py
+```
+
+Luego abre tu navegador en: **http://localhost:8080**
+
+### Scrapers por Terminal
 
 ```bash
 cd src
+
+# Todos los scrapers
 python integrador.py
-```
 
-**Salida esperada:**
-```
-============================================================
-   💱 SISTEMA DE EXTRACCIÓN DE TIPO DE CAMBIO
-============================================================
-📊 Extrayendo datos de BCRP (API)...
-📊 Extrayendo datos de Kambista (Selenium)...
-📊 Extrayendo datos de Rextie (Selenium)...
-
-   📈 TIPOS DE CAMBIO:
-   ┌────────────────────────────────────────────────────────┐
-   │ Fuente       │     Compra │      Venta │     Spread │
-   ├────────────────────────────────────────────────────────┤
-   │ BCRP         │     3.3666 │      3.363 │    -0.0036 │
-   │ Kambista     │       3.33 │      3.486 │      0.156 │
-   │ Rextie       │       3.35 │      3.392 │      0.042 │
-   └────────────────────────────────────────────────────────┘
-
-   🏆 MEJOR OPCIÓN:
-      • Para COMPRAR dólares: BCRP
-      • Para VENDER dólares:  BCRP
-============================================================
-```
-
-### Scrapers individuales
-
-```bash
-# Solo BCRP (API - más rápido)
+# Scrapers individuales
 python scraper_bcrp.py
-
-# Solo Kambista (Selenium)
 python scraper_kambista.py
-
-# Solo Rextie (Selenium)
 python scraper_rextie.py
 ```
 
-### Análisis exploratorio
-
-Abre el notebook de Jupyter:
+### Análisis en Jupyter
 
 ```bash
 cd notebooks
 jupyter notebook analisis_exploratorio.ipynb
 ```
+
+---
+
+## 🌐 Aplicación Web
+
+### Páginas disponibles
+
+| Página | URL | Descripción |
+|--------|-----|-------------|
+| **Inicio** | `/` | Presentación del proyecto y características |
+| **Demo** | `/demo` | Ejecución de scrapers en tiempo real |
+| **Análisis** | `/analisis` | Gráficos comparativos y calculadora |
+| **Equipo** | `/equipo` | Información de los integrantes |
+
+### Funcionalidades
+
+#### Página Demo (`/demo`)
+- Ejecutar scrapers individualmente o todos a la vez
+- Ver resultados en tiempo real
+- Sección "Mejor Opción" que se actualiza automáticamente
+- Cálculo de ahorro por cada $1,000
+
+#### Página Análisis (`/analisis`)
+- Gráfico de barras comparativo (Compra vs Venta)
+- Gráfico de spreads por fuente
+- Calculadora de ahorro interactiva
+- Explicaciones integradas
 
 ---
 
@@ -239,54 +259,35 @@ El archivo `data/processed/tipo_cambio_historico.csv` contiene 13 columnas:
 | `mejor_venta` | Mejor fuente para vender USD |
 | `cambio_detectado` | Si hubo cambio respecto al registro anterior |
 
-### Nota sobre spreads negativos
-
-El BCRP puede mostrar **spreads negativos** porque sus tasas son valores de referencia del mercado interbancario, no precios para el público general. Esto es normal y no indica un error en la extracción.
-
-### Visualizaciones
-
-El notebook genera gráficos comparativos:
-- Comparación de tipos de cambio por fuente (barras horizontales)
-- Análisis de spreads por casa de cambio
-- Resumen y recomendaciones
-
 ---
 
 ## 📚 Documentación
 
 | Documento | Descripción |
 |-----------|-------------|
-| [PLANIFICACION.md](docs/PLANIFICACION.md) | Cronograma, fases del proyecto, distribución de tareas |
-| [FUENTES_DATOS.md](docs/FUENTES_DATOS.md) | Documentación técnica de cada fuente, endpoints, implementación |
-| [DICCIONARIO_DATOS.md](docs/DICCIONARIO_DATOS.md) | Descripción detallada de cada columna del CSV |
+| [PLANIFICACION.md](docs/PLANIFICACION.md) | Cronograma, fases del proyecto |
+| [FUENTES_DATOS.md](docs/FUENTES_DATOS.md) | Documentación técnica de cada fuente |
+| [DICCIONARIO_DATOS.md](docs/DICCIONARIO_DATOS.md) | Descripción de columnas del CSV |
 
 ---
 
 ## 🔧 Dificultades y Soluciones
 
 ### 1. Páginas dinámicas
-
-**Problema:** Kambista y Rextie cargan datos con JavaScript. El HTML inicial no contiene las tasas.
-
-**Solución:** Implementamos Selenium con Chrome headless para renderizar la página completa antes de extraer datos.
+**Problema:** Kambista y Rextie cargan datos con JavaScript.
+**Solución:** Selenium con Chrome headless.
 
 ### 2. Identificación de valores
+**Problema:** Múltiples números en el HTML.
+**Solución:** Regex y filtrado por rango válido (3.30 - 3.50).
 
-**Problema:** El HTML renderizado contiene muchos números. ¿Cómo identificar cuáles son tipos de cambio?
+### 3. Interfaz de usuario
+**Problema:** Crear una interfaz web sin conocimientos de frontend.
+**Solución:** NiceGUI permite crear aplicaciones web modernas usando solo Python.
 
-**Solución:** Usamos expresiones regulares (`[\d]+\.[\d]{2,4}`) y filtrado por rango válido (3.30 - 3.50 para PEN/USD).
-
-### 3. Manejo de errores
-
-**Problema:** Las páginas web pueden fallar, cambiar estructura o estar caídas.
-
-**Solución:** Implementamos manejo robusto de excepciones con logging detallado y valores de retorno que indican éxito/fallo.
-
-### 4. Trabajo colaborativo
-
-**Problema:** Coordinar el trabajo entre 3 personas con diferentes horarios.
-
-**Solución:** Usamos GitHub para control de versiones con commits descriptivos siguiendo convenciones (`feat:`, `fix:`, `docs:`).
+### 4. Compatibilidad NiceGUI 3.4.1
+**Problema:** Algunos componentes cambiaron entre versiones.
+**Solución:** Usar `ui.row()` en lugar de `ui.header()`, evitar `ui.html()`.
 
 ---
 
