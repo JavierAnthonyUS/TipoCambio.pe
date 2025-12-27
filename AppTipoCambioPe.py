@@ -1,36 +1,16 @@
 """
 💱 COMPARADOR DE TIPO DE CAMBIO PERÚ
-Aplicación Web con NiceGUI
-
-Este módulo proporciona una interfaz web interactiva para visualizar
-y comparar tipos de cambio de múltiples fuentes en tiempo real.
-
-Páginas:
-    - /         : Página de inicio
-    - /demo     : Demo de scrapers en tiempo real
-    - /analisis : Análisis comparativo (EN DESARROLLO)
-    - /equipo   : Información del equipo
-
-Tecnologías:
-    - NiceGUI 3.4+ para la interfaz web
-    - Plotly para gráficos interactivos
-    - Tailwind CSS para estilos
-
-Autor: Javier Uraco (@JavierAnthonyUS)
-Fecha: Diciembre 2025
-
-Uso:
-    python AppTipoCambioPe.py
-    Abrir navegador en: http://localhost:8080
+LP2 - UNALM 2025
 """
 
 from nicegui import ui
+import plotly.graph_objects as go
 import asyncio
 import os
 import sys
 
-# Agregar carpeta src al path para importar scrapers
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+# Agregar carpeta src al path
+sys.path.insert(0, os.path.join(os.path.dirname(_file_), 'src'))
 
 # Intentar importar scrapers
 try:
@@ -42,29 +22,20 @@ except ImportError:
     SCRAPERS_DISPONIBLES = False
     print("⚠️ Scrapers no encontrados. Usando datos demo.")
 
-
 # =============================================================================
-# DATOS DE DEMOSTRACIÓN
+# DATOS
 # =============================================================================
 def obtener_datos_demo():
-    """
-    Retorna datos de demostración cuando los scrapers no están disponibles.
-    
-    Returns:
-        dict: Diccionario con datos de ejemplo de las 3 fuentes
-    """
     return {
         'bcrp': {'compra': 3.7320, 'venta': 3.7350, 'exito': True},
         'kambista': {'compra': 3.7100, 'venta': 3.7550, 'exito': True},
         'rextie': {'compra': 3.7200, 'venta': 3.7480, 'exito': True},
     }
 
-
 # =============================================================================
-# FUNCIONES ASYNC PARA EJECUTAR SCRAPERS
+# FUNCIONES ASYNC PARA SCRAPERS
 # =============================================================================
 async def ejecutar_scraper_bcrp():
-    """Ejecuta el scraper de BCRP de forma asíncrona."""
     if SCRAPERS_DISPONIBLES:
         try:
             resultado = obtener_tipo_cambio_bcrp()
@@ -79,9 +50,7 @@ async def ejecutar_scraper_bcrp():
         await asyncio.sleep(1)
         return obtener_datos_demo()['bcrp']
 
-
 async def ejecutar_scraper_kambista():
-    """Ejecuta el scraper de Kambista de forma asíncrona."""
     if SCRAPERS_DISPONIBLES:
         try:
             resultado = obtener_tipo_cambio_kambista()
@@ -96,9 +65,7 @@ async def ejecutar_scraper_kambista():
         await asyncio.sleep(2)
         return obtener_datos_demo()['kambista']
 
-
 async def ejecutar_scraper_rextie():
-    """Ejecuta el scraper de Rextie de forma asíncrona."""
     if SCRAPERS_DISPONIBLES:
         try:
             resultado = obtener_tipo_cambio_rextie()
@@ -113,23 +80,18 @@ async def ejecutar_scraper_rextie():
         await asyncio.sleep(2)
         return obtener_datos_demo()['rextie']
 
-
 # =============================================================================
 # FUNCIÓN: CALCULAR MEJOR OPCIÓN
 # =============================================================================
 def calcular_mejor_opcion(datos):
     """
-    Determina la mejor opción para comprar y vender dólares.
-    
-    Args:
-        datos: Dict con datos de las 3 fuentes
-    
-    Returns:
-        tuple: (mejor_para_comprar, mejor_para_vender)
+    Para COMPRAR dólares: buscas el MENOR precio de VENTA
+    Para VENDER dólares: buscas el MAYOR precio de COMPRA
     """
     fuentes_validas = []
     
     for nombre, info in datos.items():
+        # CORREGIDO: Verificar que info no sea None antes de usar .get()
         if info is not None and info.get('compra') and info.get('venta') and info['compra'] > 0:
             fuentes_validas.append({
                 'nombre': nombre.upper(),
@@ -140,19 +102,15 @@ def calcular_mejor_opcion(datos):
     if not fuentes_validas:
         return None, None
     
-    # Para COMPRAR USD: menor precio de VENTA
     mejor_comprar = min(fuentes_validas, key=lambda x: x['venta'])
-    # Para VENDER USD: mayor precio de COMPRA
     mejor_vender = max(fuentes_validas, key=lambda x: x['compra'])
     
     return mejor_comprar, mejor_vender
-
 
 # =============================================================================
 # COMPONENTE: BARRA DE NAVEGACIÓN
 # =============================================================================
 def crear_navbar():
-    """Crea la barra de navegación superior."""
     with ui.row().classes('w-full items-center justify-between p-4 bg-gray-900'):
         with ui.row().classes('items-center gap-3'):
             ui.icon('currency_exchange').classes('text-3xl text-cyan-400')
@@ -164,18 +122,15 @@ def crear_navbar():
             ui.link('Análisis', '/analisis').classes('text-cyan-400 no-underline hover:text-cyan-300')
             ui.link('Equipo', '/equipo').classes('text-cyan-400 no-underline hover:text-cyan-300')
 
-
 # =============================================================================
 # PÁGINA: INICIO
 # =============================================================================
 @ui.page('/')
 def pagina_inicio():
-    """Página principal con presentación del proyecto."""
     ui.query('body').classes('bg-gray-900')
     
     crear_navbar()
     
-    # Hero section
     with ui.column().classes('w-full items-center py-16 px-8'):
         ui.label('💱').classes('text-8xl mb-4')
         ui.label('Comparador de Tipo de Cambio').classes('text-5xl font-bold text-cyan-400 text-center')
@@ -188,7 +143,6 @@ def pagina_inicio():
             ui.button('🚀 Ver Demo', on_click=lambda: ui.navigate.to('/demo')).props('push color=cyan size=lg').classes('px-8')
             ui.button('📊 Análisis', on_click=lambda: ui.navigate.to('/analisis')).props('outline color=cyan size=lg').classes('px-8')
     
-    # Características
     with ui.row().classes('w-full justify-center gap-8 px-8 pb-16 flex-wrap'):
         with ui.card().classes('w-80 p-6 bg-gray-800'):
             ui.icon('cloud_download').classes('text-4xl text-cyan-400 mb-4')
@@ -205,7 +159,6 @@ def pagina_inicio():
             ui.label('Análisis Inteligente').classes('text-xl font-bold text-white mb-2')
             ui.label('Cálculo de spreads, comparación y recomendación de mejor opción').classes('text-gray-400')
     
-    # Problema / Solución
     ui.label('¿Por qué TipoCambio.pe?').classes('text-3xl font-bold text-white text-center mb-8')
     
     with ui.row().classes('w-full justify-center gap-8 px-8 pb-16 flex-wrap'):
@@ -217,22 +170,19 @@ def pagina_inicio():
             ui.label('✅ Nuestra Solución').classes('text-xl font-bold text-green-400 mb-4')
             ui.label('Sistema automatizado que extrae datos de múltiples fuentes y recomienda la mejor opción.').classes('text-gray-300')
     
-    # Footer
     with ui.row().classes('w-full justify-center py-6 bg-gray-950'):
         ui.label('💱 TipoCambio.pe | LP2 - UNALM 2025').classes('text-gray-500')
 
-
 # =============================================================================
-# PÁGINA: DEMO DE SCRAPERS
+# PÁGINA: DEMO
 # =============================================================================
 @ui.page('/demo')
 def pagina_demo():
-    """Página de demostración de los scrapers en tiempo real."""
     ui.query('body').classes('bg-gray-900')
     
     crear_navbar()
     
-    # Variables para almacenar datos
+    # Variables para los datos
     datos_locales = {'bcrp': None, 'kambista': None, 'rextie': None}
     
     with ui.column().classes('w-full p-8'):
@@ -243,7 +193,7 @@ def pagina_demo():
         
         with ui.row().classes('w-full gap-6 flex-wrap justify-center'):
             
-            # === CARD BCRP ===
+            # === BCRP ===
             with ui.card().classes('w-80 p-6 bg-gray-800'):
                 with ui.row().classes('items-center gap-3 mb-4'):
                     ui.icon('account_balance').classes('text-3xl text-blue-500')
@@ -277,7 +227,7 @@ def pagina_demo():
                 
                 ui.button('EJECUTAR BCRP', on_click=click_bcrp).props('push color=blue').classes('w-full')
             
-            # === CARD KAMBISTA ===
+            # === KAMBISTA ===
             with ui.card().classes('w-80 p-6 bg-gray-800'):
                 with ui.row().classes('items-center gap-3 mb-4'):
                     ui.icon('storefront').classes('text-3xl text-purple-500')
@@ -311,7 +261,7 @@ def pagina_demo():
                 
                 ui.button('EJECUTAR KAMBISTA', on_click=click_kambista).props('push color=purple').classes('w-full')
             
-            # === CARD REXTIE ===
+            # === REXTIE ===
             with ui.card().classes('w-80 p-6 bg-gray-800'):
                 with ui.row().classes('items-center gap-3 mb-4'):
                     ui.icon('swap_horiz').classes('text-3xl text-orange-500')
@@ -345,7 +295,6 @@ def pagina_demo():
                 
                 ui.button('EJECUTAR REXTIE', on_click=click_rextie).props('push color=orange').classes('w-full')
         
-        # Botón ejecutar todos
         ui.separator().classes('my-8')
         
         with ui.row().classes('w-full justify-center'):
@@ -360,59 +309,70 @@ def pagina_demo():
             
             ui.button('🚀 EJECUTAR TODOS', on_click=ejecutar_todos).props('push color=cyan size=xl').classes('px-12')
         
-        # Sección Mejor Opción
+        # =================================================================
+        # SECCIÓN: MEJOR OPCIÓN
+        # =================================================================
         ui.separator().classes('my-8')
         
         with ui.card().classes('w-full max-w-4xl mx-auto p-6 bg-gray-800'):
             ui.label('🏆 Mejor Opción').classes('text-2xl font-bold text-white text-center mb-6')
             
             with ui.row().classes('w-full justify-around flex-wrap gap-8'):
+                # Para COMPRAR USD
                 with ui.column().classes('items-center flex-1 min-w-64'):
                     ui.icon('shopping_cart').classes('text-4xl text-green-400 mb-2')
                     ui.label('Para COMPRAR USD').classes('text-xl text-white font-bold')
                     ui.label('(Busca el menor precio de VENTA)').classes('text-xs text-gray-500 mb-4')
+                    
                     mejor_comprar_fuente = ui.label('Ejecuta los scrapers').classes('text-2xl font-bold text-yellow-400')
                     mejor_comprar_precio = ui.label('').classes('text-lg text-gray-300')
                     mejor_comprar_ahorro = ui.label('').classes('text-sm text-green-400')
                 
+                # Para VENDER USD
                 with ui.column().classes('items-center flex-1 min-w-64'):
                     ui.icon('sell').classes('text-4xl text-cyan-400 mb-2')
                     ui.label('Para VENDER USD').classes('text-xl text-white font-bold')
                     ui.label('(Busca el mayor precio de COMPRA)').classes('text-xs text-gray-500 mb-4')
+                    
                     mejor_vender_fuente = ui.label('Ejecuta los scrapers').classes('text-2xl font-bold text-yellow-400')
                     mejor_vender_precio = ui.label('').classes('text-lg text-gray-300')
                     mejor_vender_ahorro = ui.label('').classes('text-sm text-cyan-400')
         
+        # Función para actualizar (CORREGIDA)
         def actualizar_mejor_opcion():
             mejor_comprar, mejor_vender = calcular_mejor_opcion(datos_locales)
             
             if mejor_comprar and mejor_vender:
+                # Actualizar mejor para COMPRAR
                 mejor_comprar_fuente.text = f"✅ {mejor_comprar['nombre']}"
                 mejor_comprar_precio.text = f"Venta: S/ {mejor_comprar['venta']:.4f}"
                 
+                # Calcular ahorro
                 todas_ventas = [d['venta'] for d in datos_locales.values() if d is not None and d.get('venta')]
                 if len(todas_ventas) > 1:
                     ahorro = (max(todas_ventas) - mejor_comprar['venta']) * 1000
                     mejor_comprar_ahorro.text = f"Ahorras S/ {ahorro:.2f} por cada $1,000"
                 
+                # Actualizar mejor para VENDER
                 mejor_vender_fuente.text = f"✅ {mejor_vender['nombre']}"
                 mejor_vender_precio.text = f"Compra: S/ {mejor_vender['compra']:.4f}"
                 
+                # Calcular ganancia
                 todas_compras = [d['compra'] for d in datos_locales.values() if d is not None and d.get('compra')]
                 if len(todas_compras) > 1:
                     ganancia = (mejor_vender['compra'] - min(todas_compras)) * 1000
                     mejor_vender_ahorro.text = f"Ganas S/ {ganancia:.2f} más por cada $1,000"
 
-
 # =============================================================================
-# PÁGINA: ANÁLISIS (EN DESARROLLO - Fiorella completará)
+# PÁGINA: ANÁLISIS
 # =============================================================================
 @ui.page('/analisis')
 def pagina_analisis():
-    """Página de análisis comparativo - EN DESARROLLO."""
     ui.query('body').classes('bg-gray-900')
     
     crear_navbar()
+    
+    datos = obtener_datos_demo()
     
     with ui.column().classes('w-full p-8'):
         with ui.row().classes('items-center gap-3 mb-2'):
@@ -420,18 +380,88 @@ def pagina_analisis():
             ui.label('Análisis Comparativo').classes('text-3xl font-bold text-white')
         ui.label('Visualización de datos y cálculo de ahorro potencial').classes('text-gray-400 mb-8')
         
-        # Placeholder - Fiorella completará esta sección
-        with ui.card().classes('w-full max-w-4xl mx-auto p-8 bg-gray-800'):
-            ui.label('🚧 Sección en desarrollo').classes('text-2xl font-bold text-yellow-400 text-center mb-4')
-            ui.label('Los gráficos comparativos y la calculadora serán agregados próximamente.').classes('text-gray-400 text-center')
-
+        with ui.row().classes('w-full gap-8 flex-wrap justify-center'):
+            
+            # Gráfico de barras
+            with ui.card().classes('flex-1 min-w-96 p-6 bg-gray-800'):
+                ui.label('📊 Comparación de Tipos de Cambio').classes('text-xl font-bold text-white mb-4')
+                
+                fig = go.Figure()
+                fuentes = ['BCRP', 'Kambista', 'Rextie']
+                compras = [datos['bcrp']['compra'], datos['kambista']['compra'], datos['rextie']['compra']]
+                ventas = [datos['bcrp']['venta'], datos['kambista']['venta'], datos['rextie']['venta']]
+                
+                fig.add_trace(go.Bar(name='Compra', x=fuentes, y=compras, marker_color='#00c853'))
+                fig.add_trace(go.Bar(name='Venta', x=fuentes, y=ventas, marker_color='#ff5252'))
+                
+                fig.update_layout(
+                    barmode='group',
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    font_color='white',
+                    legend=dict(orientation='h', y=1.1),
+                    margin=dict(l=20, r=20, t=40, b=20),
+                    yaxis=dict(gridcolor='rgba(255,255,255,0.1)')
+                )
+                
+                ui.plotly(fig).classes('w-full h-80')
+                
+                with ui.expansion('¿Cómo interpretar?', icon='help').classes('w-full mt-4'):
+                    ui.label('• VERDE = Precio COMPRA (lo que te pagan al vender USD)').classes('text-gray-300 text-sm')
+                    ui.label('• ROJO = Precio VENTA (lo que pagas al comprar USD)').classes('text-gray-300 text-sm')
+            
+            # Gráfico de spreads
+            with ui.card().classes('flex-1 min-w-96 p-6 bg-gray-800'):
+                ui.label('📈 Análisis de Spreads').classes('text-xl font-bold text-white mb-4')
+                
+                spreads = [
+                    datos['bcrp']['venta'] - datos['bcrp']['compra'],
+                    datos['kambista']['venta'] - datos['kambista']['compra'],
+                    datos['rextie']['venta'] - datos['rextie']['compra']
+                ]
+                
+                fig2 = go.Figure(data=[
+                    go.Bar(x=fuentes, y=spreads, marker_color=['#1565c0', '#7b1fa2', '#e65100'],
+                           text=[f'S/ {s:.4f}' for s in spreads], textposition='outside')
+                ])
+                
+                fig2.update_layout(
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    font_color='white',
+                    margin=dict(l=20, r=20, t=40, b=20),
+                    yaxis=dict(gridcolor='rgba(255,255,255,0.1)', title='Spread (S/)')
+                )
+                
+                ui.plotly(fig2).classes('w-full h-80')
+                
+                with ui.expansion('¿Qué es el spread?', icon='help').classes('w-full mt-4'):
+                    ui.label('• Spread = Venta - Compra').classes('text-gray-300 text-sm')
+                    ui.label('• Es la ganancia de la casa de cambio').classes('text-gray-300 text-sm')
+                    ui.label('• Spread BAJO = Mejor para ti').classes('text-green-400 text-sm')
+        
+        # Calculadora
+        ui.separator().classes('my-8')
+        
+        with ui.card().classes('w-full max-w-xl mx-auto p-6 bg-gray-800'):
+            ui.label('💰 Calculadora de Ahorro').classes('text-2xl font-bold text-white text-center mb-6')
+            
+            monto = ui.number('Monto en USD', value=1000, min=1, max=100000).classes('w-full mb-4')
+            resultado = ui.label('Ingresa un monto y presiona calcular').classes('text-center text-lg text-gray-300 mt-4')
+            
+            def calcular():
+                m = monto.value or 1000
+                ventas = [datos['bcrp']['venta'], datos['kambista']['venta'], datos['rextie']['venta']]
+                ahorro = (max(ventas) - min(ventas)) * m
+                resultado.text = f'💵 Por ${m:,.0f} USD puedes ahorrar hasta S/ {ahorro:.2f}'
+            
+            ui.button('Calcular Ahorro', on_click=calcular).props('push color=cyan').classes('w-full')
 
 # =============================================================================
 # PÁGINA: EQUIPO
 # =============================================================================
 @ui.page('/equipo')
 def pagina_equipo():
-    """Página con información del equipo de desarrollo."""
     ui.query('body').classes('bg-gray-900')
     
     crear_navbar()
@@ -445,13 +475,13 @@ def pagina_equipo():
                 ui.label('👨‍💻').classes('text-6xl mb-4')
                 ui.label('Javier Uraco').classes('text-xl font-bold text-white')
                 ui.label('Líder del Proyecto').classes('text-cyan-400 text-sm mb-4')
-                ui.label('BCRP, Rextie, Integrador, App Web').classes('text-gray-400 text-sm')
+                ui.label('BCRP, Rextie, App Web').classes('text-gray-400 text-sm')
             
             with ui.card().classes('w-72 p-6 bg-gray-800 text-center'):
                 ui.label('👩‍💻').classes('text-6xl mb-4')
                 ui.label('Fiorella Fuentes').classes('text-xl font-bold text-white')
                 ui.label('Desarrolladora').classes('text-purple-400 text-sm mb-4')
-                ui.label('Scraper Kambista, App Web').classes('text-gray-400 text-sm')
+                ui.label('Scraper Kambista').classes('text-gray-400 text-sm')
             
             with ui.card().classes('w-72 p-6 bg-gray-800 text-center'):
                 ui.label('👨‍💻').classes('text-6xl mb-4')
@@ -471,11 +501,10 @@ def pagina_equipo():
                 ui.badge('NiceGUI').props('color=cyan')
                 ui.badge('Plotly').props('color=pink')
 
-
 # =============================================================================
-# EJECUTAR APLICACIÓN
+# EJECUTAR
 # =============================================================================
-if __name__ in {"__main__", "__mp_main__"}:
+if _name_ in {"_main", "mp_main_"}:
     print("=" * 60)
     print("💱 COMPARADOR DE TIPO DE CAMBIO - PERÚ")
     print("=" * 60)
