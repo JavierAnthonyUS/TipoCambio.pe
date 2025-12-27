@@ -6,6 +6,12 @@
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Status](https://img.shields.io/badge/Status-Production-brightgreen.svg)]()
 
+## 🌐 Demo en Vivo
+
+🚀 **Prueba la aplicación:** [https://tipo-cambio-peru.onrender.com](https://tipo-cambio-peru.onrender.com)
+
+---
+
 Sistema automatizado para extraer, comparar y analizar tipos de cambio de múltiples fuentes en Perú. **Incluye aplicación web interactiva** para visualización en tiempo real. Desarrollado como proyecto final del curso **Lenguaje de Programación 2 (LP2)** - Universidad Nacional Agraria La Molina (UNALM), semestre 2025-2.
 
 ---
