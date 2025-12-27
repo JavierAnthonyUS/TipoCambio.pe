@@ -45,7 +45,7 @@ En Perú existen múltiples casas de cambio con diferentes tasas para compra y v
 | Integrante | GitHub | Rol | Contribuciones |
 |------------|--------|-----|----------------|
 | Javier Uraco | [@JavierAnthonyUS](https://github.com/JavierAnthonyUS) | Líder del proyecto | BCRP, Rextie, Integrador, App Web, Notebook |
-| Fiorella Fuentes | [@fiorellafuentesb20-cell](https://github.com/fiorellafuentesb20-cell) | Desarrolladora | Scraper Kambista | App Web |
+| Fiorella Fuentes | [@fiorellafuentesb20-cell](https://github.com/fiorellafuentesb20-cell) | Desarrolladora | Scraper Kambista, App Web |
 | Sebastián Fernández | [@TucoSquare](https://github.com/TucoSquare) | Documentación | README, documentación técnica |
 
 ---
