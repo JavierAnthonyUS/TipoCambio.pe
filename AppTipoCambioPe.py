@@ -512,10 +512,14 @@ if __name__ in {"__main__", "mp_main_"}:
     print("🌐 Abre tu navegador en: http://localhost:8080")
     print("=" * 60)
     
+    # Obtener puerto de Render o usar 8080 local
+    port = int(os.environ.get('PORT', 8080))
+    
     ui.run(
         title='TipoCambio.pe - Comparador de Tipo de Cambio',
         favicon='💱',
         dark=True,
-        port=8080,
+        host='0.0.0.0',
+        port=port,
         reload=False
     )
