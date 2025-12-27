@@ -10,7 +10,7 @@ import os
 import sys
 
 # Agregar carpeta src al path
-sys.path.insert(0, os.path.join(os.path.dirname(_file_), 'src'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
 
 # Intentar importar scrapers
 try:
@@ -475,13 +475,13 @@ def pagina_equipo():
                 ui.label('👨‍💻').classes('text-6xl mb-4')
                 ui.label('Javier Uraco').classes('text-xl font-bold text-white')
                 ui.label('Líder del Proyecto').classes('text-cyan-400 text-sm mb-4')
-                ui.label('BCRP, Rextie, App Web').classes('text-gray-400 text-sm')
+                ui.label('BCRP, Rextie, Integrador, App Web').classes('text-gray-400 text-sm')
             
             with ui.card().classes('w-72 p-6 bg-gray-800 text-center'):
                 ui.label('👩‍💻').classes('text-6xl mb-4')
                 ui.label('Fiorella Fuentes').classes('text-xl font-bold text-white')
                 ui.label('Desarrolladora').classes('text-purple-400 text-sm mb-4')
-                ui.label('Scraper Kambista').classes('text-gray-400 text-sm')
+                ui.label('Scraper Kambista, Análisis App Web').classes('text-gray-400 text-sm')
             
             with ui.card().classes('w-72 p-6 bg-gray-800 text-center'):
                 ui.label('👨‍💻').classes('text-6xl mb-4')
@@ -504,7 +504,7 @@ def pagina_equipo():
 # =============================================================================
 # EJECUTAR
 # =============================================================================
-if _name_ in {"_main", "mp_main_"}:
+if __name__ in {"__main__", "mp_main_"}:
     print("=" * 60)
     print("💱 COMPARADOR DE TIPO DE CAMBIO - PERÚ")
     print("=" * 60)
