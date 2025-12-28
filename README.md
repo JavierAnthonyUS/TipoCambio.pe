@@ -297,12 +297,6 @@ El archivo `data/processed/tipo_cambio_historico.csv` contiene 13 columnas:
 
 ---
 
-## 🤝 Contribuciones
-
-Este es un proyecto académico. Las sugerencias son bienvenidas a través de Issues.
-
----
-
 ## 📝 Licencia
 
 Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
